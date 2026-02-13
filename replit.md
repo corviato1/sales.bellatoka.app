@@ -21,11 +21,13 @@ A React-based sales/landing page for Bella Toka, a premium craft cannabis brand.
   - `styles/global.css` - Global styles
   - `utils/consoleCapture.js` - Console log interception utility for live troubleshooting
 - `public/` - Static assets (images, favicon, index.html, _redirects for Netlify)
+- `netlify/functions/` - Netlify serverless functions
+  - `auth.js` - Server-side password validation (password never touches the browser)
 - `attached_assets/` - Reference files (original admin design)
 
 ## Admin Dashboard
 - **URL**: `/admin`
-- **Password**: Set via `REACT_APP_ADMIN_PASSWORD` environment variable (never hardcoded)
+- **Password**: Set via `ADMIN_PASSWORD` environment variable on Netlify (server-side only, never in client bundle)
 - **Dev shortcut**: In local development, "password" also works for quick access
 - **Tabs**: Profile, Inquiries, Analytics, Console Logs, Settings
 - **Data Storage**: localStorage (bt_inquiries, bt_profile, bt_settings)
@@ -52,7 +54,7 @@ A React-based sales/landing page for Bella Toka, a premium craft cannabis brand.
    - Leave Base/Package directory blank
 3. Set environment variable:
    - Go to Site configuration > Environment variables
-   - Add `REACT_APP_ADMIN_PASSWORD` with your chosen production password
+   - Add `ADMIN_PASSWORD` with your chosen production password
 4. Deploy — the `_redirects` file in `public/` handles SPA routing automatically
 
 ## Environment Variables
@@ -60,16 +62,18 @@ A React-based sales/landing page for Bella Toka, a premium craft cannabis brand.
 - `HOST=0.0.0.0` - Dev server host
 - `DANGEROUSLY_DISABLE_HOST_CHECK=true` - Allow Replit proxy
 - `BROWSER=none` - Prevent auto-opening browser
-- `REACT_APP_ADMIN_PASSWORD` - Admin login password (required, set per environment)
+- `ADMIN_PASSWORD` - Admin login password (set in Netlify, server-side only, never exposed to client)
 
 ## Security Notes
-- Admin password is read from `REACT_APP_ADMIN_PASSWORD` env var at build time
+- Admin password is validated server-side via Netlify serverless function (`netlify/functions/auth.js`)
+- Password is read from `ADMIN_PASSWORD` env var — no `REACT_APP_` prefix, so it never enters the JS bundle
+- Uses `crypto.timingSafeEqual` to prevent timing attacks
+- The dev-only "password" shortcut only works when NODE_ENV === 'development'
 - Never commit passwords to source code
-- The dev-only "password" shortcut is stripped in production builds (NODE_ENV !== 'development')
-- Note: CRA embeds env vars in the JS bundle at build time; for true server-side auth, add a backend
 
 ## Recent Changes
-- 2026-02-13: SECURITY FIX — Moved admin password from hardcoded to REACT_APP_ADMIN_PASSWORD env var
+- 2026-02-13: SECURITY FIX — Moved password validation to Netlify serverless function (server-side only)
+- 2026-02-13: Removed REACT_APP_ADMIN_PASSWORD; password now set as ADMIN_PASSWORD in Netlify env vars
 - 2026-02-13: Added Netlify deployment support (_redirects file, deployment docs)
 - 2026-02-13: Mock analytics data restricted to development mode only
 - 2026-02-13: Added admin dashboard at /admin with full sidebar navigation, login system, and 5 tab panels
