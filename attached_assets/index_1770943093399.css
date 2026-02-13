@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #f0f7ff;
+  --color-primary-100: #e0efff;
+  --color-primary-200: #b9dfff;
+  --color-primary-300: #7cc6ff;
+  --color-primary-400: #36a9ff;
+  --color-primary-500: #0c8bff;
+  --color-primary-600: #0068d6;
+  --color-primary-700: #0052ad;
+  --color-primary-800: #00468f;
+  --color-primary-900: #063c75;
+  
+  --color-accent-50: #fdf8f3;
+  --color-accent-100: #f9ece0;
+  --color-accent-200: #f2d6bc;
+  --color-accent-300: #e9b98e;
+  --color-accent-400: #de945f;
+  --color-accent-500: #d67940;
+  --color-accent-600: #c86235;
+  --color-accent-700: #a64d2d;
+  --color-accent-800: #853f2b;
+  --color-accent-900: #6c3526;
+  
+  --font-family-sans: 'Inter', system-ui, sans-serif;
+  --font-family-serif: 'Playfair Display', Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  margin: 0;
+}
+
+.font-serif {
+  font-family: var(--font-family-serif);
+}
+
+.btn-primary {
+  @apply bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-200 shadow-lg hover:shadow-xl;
+}
+
+.btn-secondary {
+  @apply bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold border-2 border-primary-600 hover:bg-primary-50 transition-colors duration-200;
+}
+
+.btn-accent {
+  @apply bg-accent-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-accent-600 transition-colors duration-200 shadow-lg hover:shadow-xl;
+}
+
+.section-padding {
+  @apply py-16 md:py-24 px-4 md:px-8;
+}
+
+.container-custom {
+  @apply max-w-7xl mx-auto;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
