@@ -52,7 +52,26 @@ const SalesPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const inquiry = {
+      id: Date.now().toString(),
+      ...formData,
+      status: 'new',
+      submittedAt: new Date().toISOString(),
+    };
+    const existing = JSON.parse(localStorage.getItem('bt_inquiries') || '[]');
+    existing.unshift(inquiry);
+    localStorage.setItem('bt_inquiries', JSON.stringify(existing));
+    console.log('New partnership inquiry submitted:', formData.businessName);
     alert("Thank you for your inquiry! Our team will contact you within 24 hours to discuss your partnership.");
+    setFormData({
+      businessName: "",
+      contactName: "",
+      email: "",
+      phone: "",
+      licenseNumber: "",
+      preferredContractLength: "",
+      message: "",
+    });
   };
 
   const handleChange = (e) => {
