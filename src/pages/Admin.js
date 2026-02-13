@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Lock, LogOut, Home, User, Settings, Save, RefreshCw, BarChart2,
-  Eye, EyeOff, TrendingUp, Calendar, Globe, Mail, Phone, Clock,
-  CheckCircle, XCircle, FileText, Trash2, Terminal, ArrowLeft
+  Eye, EyeOff, TrendingUp, Globe, Mail,
+  CheckCircle, FileText, Trash2, Terminal, ArrowLeft
 } from 'lucide-react';
 import { getLogEntries, clearLogEntries, subscribeToLogs } from '../utils/consoleCapture';
 import '../styles/Admin.css';
@@ -48,7 +48,6 @@ function LoginForm({ onLogin }) {
 
     setTimeout(() => {
       const isDev = process.env.NODE_ENV === 'development';
-<<<<<<< HEAD
       const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;
       if (!adminPassword) {
         setError('Admin password not configured. Set REACT_APP_ADMIN_PASSWORD environment variable.');
@@ -56,9 +55,6 @@ function LoginForm({ onLogin }) {
         return;
       }
       if (password === adminPassword || (isDev && password === 'password')) {
-=======
-      if (password === 'bellatoka2024' || (isDev && password === 'password')) {
->>>>>>> eb8d717bfe38a3404248cc4119e511880a31a1fb
         localStorage.setItem('bt_admin_token', 'authenticated');
         onLogin();
       } else {
