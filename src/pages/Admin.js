@@ -41,27 +41,41 @@ function LoginForm({ onLogin }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    setTimeout(() => {
-      const isDev = process.env.NODE_ENV === 'development';
-      const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;
-      if (!adminPassword) {
-        setError('Admin password not configured. Set REACT_APP_ADMIN_PASSWORD environment variable.');
-        setLoading(false);
-        return;
-      }
-      if (password === adminPassword || (isDev && password === 'password')) {
-        localStorage.setItem('bt_admin_token', 'authenticated');
+    const isDev = process.env.NODE_ENV === 'development';
+    if (isDev && password === 'password') {
+      localStorage.setItem('bt_admin_token', 'dev-authenticated');
+      onLogin();
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/.netlify/functions/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (data.success && data.token) {
+        localStorage.setItem('bt_admin_token', data.token);
         onLogin();
       } else {
-        setError('Invalid password. Please try again.');
+        setError(data.error || 'Invalid password. Please try again.');
       }
+    } catch {
+      if (isDev) {
+        setError('Auth server not available. In local dev, use "password" to log in.');
+      } else {
+        setError('Connection error. Please try again.');
+      }
+    } finally {
       setLoading(false);
-    }, 500);
+    }
   };
 
   return (
