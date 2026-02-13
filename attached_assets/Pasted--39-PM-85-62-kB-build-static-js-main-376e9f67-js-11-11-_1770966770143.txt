@@ -1,0 +1,66 @@
+:39 PM:   85.62 kB  build/static/js/main.376e9f67.js
+11:11:39 PM:   5.31 kB   build/static/css/main.9879aba3.css
+11:11:39 PM: The project was built assuming it is hosted at /.
+11:11:39 PM: You can control this with the homepage field in your package.json.
+11:11:39 PM: The build folder is ready to be deployed.
+11:11:39 PM: You may serve it with a static server:
+11:11:39 PM:   npm install -g serve
+11:11:39 PM:   serve -s build
+11:11:39 PM: Find out more about deployment here:
+11:11:39 PM:   https://cra.link/deployment
+11:11:39 PM: ​
+11:11:39 PM: (build.command completed in 9.8s)
+11:11:40 PM: ​
+11:11:40 PM: Scanning for secrets in code and build output.                
+11:11:40 PM: ────────────────────────────────────────────────────────────────
+11:11:40 PM: ​
+11:11:40 PM: ​
+11:11:40 PM: ❯ Scanning complete. 69 file(s) scanned. Secrets scanning found 1 instance(s) of secrets in build output or repo code.
+11:11:40 PM: ​
+11:11:40 PM: Secret env var "REACT_APP_ADMIN_PASSWORD"'s value detected:
+  found value at line 2 in build/static/js/main.376e9f67.js
+11:11:40 PM: ​
+11:11:40 PM: To prevent exposing secrets, the build will fail until these secret values are not found in build output or repo files.
+11:11:40 PM: ​
+11:11:40 PM: If these are expected, use SECRETS_SCAN_OMIT_PATHS, SECRETS_SCAN_OMIT_KEYS, or SECRETS_SCAN_ENABLED to prevent detecting.
+11:11:40 PM: ​
+11:11:40 PM: For more information on secrets scanning, see the Netlify Docs: https://ntl.fyi/configure-secrets-scanning
+11:11:40 PM: ​
+11:11:40 PM: Secrets scanning detected secrets in files during build.      
+11:11:40 PM: ────────────────────────────────────────────────────────────────
+11:11:40 PM: ​
+11:11:40 PM:   Error message
+11:11:40 PM:   Secrets scanning found secrets in build.
+11:11:40 PM: ​
+11:11:40 PM:   Resolved config
+11:11:40 PM:   build:
+11:11:40 PM:     command: npm run build
+11:11:40 PM:     commandOrigin: config
+11:11:40 PM:     environment:
+11:11:40 PM:       - REACT_APP_ADMIN_PASSWORD
+11:11:40 PM:       - REACT_APP_WORKFLOW_PASSWORD
+11:11:40 PM:     publish: /opt/build/repo/build
+11:11:40 PM:     publishOrigin: config
+11:11:40 PM:   headers:
+11:11:40 PM:     - for: /*
+      values:
+        Cache-Control: public, max-age=3600
+        Referrer-Policy: no-referrer
+        Strict-Transport-Security: max-age=31536000; includeSubDomains
+        X-Content-Type-Options: nosniff
+        X-Frame-Options: DENY
+        X-XSS-Protection: 1; mode=block
+    - for: /static/*
+      values:
+        Cache-Control: public, max-age=31536000
+    - for: /*.html
+      values:
+        Cache-Control: public, no-cache
+  redirects:
+    - from: /*
+      status: 200
+      to: /index.html
+  redirectsOrigin: config
+11:11:40 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
+11:11:40 PM: Failing build: Failed to build site
+11:11:41 PM: Finished processing build request in 23.596s
