@@ -48,7 +48,13 @@ function LoginForm({ onLogin }) {
 
     setTimeout(() => {
       const isDev = process.env.NODE_ENV === 'development';
-      if (password === 'bellatoka2024' || (isDev && password === 'password')) {
+      const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;
+      if (!adminPassword) {
+        setError('Admin password not configured. Set REACT_APP_ADMIN_PASSWORD environment variable.');
+        setLoading(false);
+        return;
+      }
+      if (password === adminPassword || (isDev && password === 'password')) {
         localStorage.setItem('bt_admin_token', 'authenticated');
         onLogin();
       } else {
