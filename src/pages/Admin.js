@@ -350,15 +350,20 @@ function InquiriesTab() {
 }
 
 function AnalyticsTab() {
+  const isDev = process.env.NODE_ENV === 'development';
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setData(generateMockAnalytics());
+    if (isDev) {
+      setTimeout(() => {
+        setData(generateMockAnalytics());
+        setLoading(false);
+      }, 600);
+    } else {
       setLoading(false);
-    }, 600);
-  }, []);
+    }
+  }, [isDev]);
 
   if (loading) {
     return (
@@ -369,13 +374,31 @@ function AnalyticsTab() {
     );
   }
 
+  if (!isDev && !data) {
+    return (
+      <>
+        <div className="admin-header">
+          <h1>Analytics</h1>
+          <p>Site traffic and visitor insights</p>
+        </div>
+        <div className="admin-card">
+          <div className="empty-state">
+            <BarChart2 size={48} />
+            <h3>Analytics Not Connected</h3>
+            <p>Connect a live analytics provider to see real visitor data here. No mock data is shown in production.</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   const maxViews = Math.max(...data.trafficByDay.map(d => d.views), 1);
 
   return (
     <>
       <div className="admin-header">
         <h1>Analytics</h1>
-        <p>Site traffic and visitor insights (demo data)</p>
+        <p>Site traffic and visitor insights {isDev && '(demo data — local only)'}</p>
       </div>
 
       <div className="stats-grid">
