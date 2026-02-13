@@ -20,24 +20,36 @@ A React-based sales/landing page for Bella Toka, a premium craft cannabis brand.
   - `styles/Admin.css` - Admin dashboard styles (green theme, sidebar layout)
   - `styles/global.css` - Global styles
   - `utils/consoleCapture.js` - Console log interception utility for live troubleshooting
+<<<<<<< HEAD
 - `public/` - Static assets (images, favicon, index.html, _redirects for Netlify)
+=======
+- `public/` - Static assets (images, favicon, index.html)
+>>>>>>> eb8d717bfe38a3404248cc4119e511880a31a1fb
 - `attached_assets/` - Reference files (original admin design)
 
 ## Admin Dashboard
 - **URL**: `/admin`
+<<<<<<< HEAD
 - **Password**: Set via `REACT_APP_ADMIN_PASSWORD` environment variable (never hardcoded)
 - **Dev shortcut**: In local development, "password" also works for quick access
+=======
+- **Password**: `bellatoka2024`
+>>>>>>> eb8d717bfe38a3404248cc4119e511880a31a1fb
 - **Tabs**: Profile, Inquiries, Analytics, Console Logs, Settings
 - **Data Storage**: localStorage (bt_inquiries, bt_profile, bt_settings)
 - **Console Capture**: Intercepts console.log/warn/error/info + window errors + unhandled promise rejections
 - **Design**: Cannabis green color scheme (#1a472a, #2d5a3f), sidebar navigation, responsive
+<<<<<<< HEAD
 - **Mock data**: Analytics tab shows demo data in development only; production shows "not connected" message
+=======
+>>>>>>> eb8d717bfe38a3404248cc4119e511880a31a1fb
 
 ## Running
 - **Dev server**: `npm start` (runs on port 5000, host 0.0.0.0)
 - **Build**: `npm run build` (outputs to `build/` directory)
 
 ## Deployment
+<<<<<<< HEAD
 
 ### Replit
 - Static deployment using the `build/` directory
@@ -54,12 +66,17 @@ A React-based sales/landing page for Bella Toka, a premium craft cannabis brand.
    - Go to Site configuration > Environment variables
    - Add `REACT_APP_ADMIN_PASSWORD` with your chosen production password
 4. Deploy — the `_redirects` file in `public/` handles SPA routing automatically
+=======
+- Static deployment using the `build/` directory
+- Build command: `npm run build`
+>>>>>>> eb8d717bfe38a3404248cc4119e511880a31a1fb
 
 ## Environment Variables
 - `PORT=5000` - Dev server port
 - `HOST=0.0.0.0` - Dev server host
 - `DANGEROUSLY_DISABLE_HOST_CHECK=true` - Allow Replit proxy
 - `BROWSER=none` - Prevent auto-opening browser
+<<<<<<< HEAD
 - `REACT_APP_ADMIN_PASSWORD` - Admin login password (required, set per environment)
 
 ## Security Notes
@@ -72,6 +89,10 @@ A React-based sales/landing page for Bella Toka, a premium craft cannabis brand.
 - 2026-02-13: SECURITY FIX — Moved admin password from hardcoded to REACT_APP_ADMIN_PASSWORD env var
 - 2026-02-13: Added Netlify deployment support (_redirects file, deployment docs)
 - 2026-02-13: Mock analytics data restricted to development mode only
+=======
+
+## Recent Changes
+>>>>>>> eb8d717bfe38a3404248cc4119e511880a31a1fb
 - 2026-02-13: Added admin dashboard at /admin with full sidebar navigation, login system, and 5 tab panels
 - 2026-02-13: Implemented console log capture system for live troubleshooting
 - 2026-02-13: Wired sales page form to store inquiries in localStorage for admin panel
