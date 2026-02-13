@@ -1,6 +1,7 @@
 [build]
   command = "npm run build"
   publish = "build"
+  environment = { SECRETS_SCAN_OMIT_PATHS = "package-lock.json" }
 
 [[redirects]]
   from = "/*"
