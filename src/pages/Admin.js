@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Lock, LogOut, Home, User, Settings, Save, RefreshCw, BarChart2,
-  Eye, EyeOff, TrendingUp, Calendar, Globe, Mail, Phone, Clock,
-  CheckCircle, XCircle, FileText, Trash2, Terminal, ArrowLeft
+  Eye, EyeOff, TrendingUp, Globe, Mail,
+  CheckCircle, FileText, Trash2, Terminal, ArrowLeft
 } from 'lucide-react';
 import { getLogEntries, clearLogEntries, subscribeToLogs } from '../utils/consoleCapture';
 import '../styles/Admin.css';
