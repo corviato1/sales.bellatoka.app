@@ -696,7 +696,7 @@ function AdminDashboard({ onLogout }) {
     return {
       brandName: saved.brandName || 'Bella Toka',
       facilityName: saved.facilityName || 'R&D Facility 3',
-      email: saved.email || 'partnerships@bellatoka.com',
+      email: saved.email || 'sales@bellatoka.com',
       phone: saved.phone || '',
       location: saved.location || 'Sonoma County, California',
       licenseNumber: saved.licenseNumber || '',
