@@ -530,7 +530,7 @@ const SalesPage = () => {
         <div className="container">
           <p>Bella Toka R&D Facility 3 | Sonoma County, California</p>
           <p className="footer-contact">
-            <a href="mailto:partnerships@bellatoka.com">partnerships@bellatoka.com</a>
+            <a href="mailto:contact@bellatoka.com">contact@bellatoka.com</a>
           </p>
           <p className="footer-note">Craft Cannabis for Discerning Partners</p>
         </div>
