@@ -3,13 +3,38 @@ import React, { useState } from "react";
 function LogLogin({ onLogin }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password === "450") {
+    setError("");
+
+    if (process.env.NODE_ENV === "development" && password === "password") {
       onLogin();
-    } else {
-      setError("Invalid password");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch("/.netlify/functions/log-auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        onLogin();
+      } else {
+        setError(data.error || "Invalid password");
+      }
+    } catch {
+      if (process.env.NODE_ENV === "development" && password === "password") {
+        onLogin();
+      } else {
+        setError("Auth service unavailable. Are you on Netlify?");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -27,8 +52,8 @@ function LogLogin({ onLogin }) {
             style={{ width: "100%", padding: "12px 14px", border: "2px solid #e0e0e0", borderRadius: 8, fontSize: "1rem", marginBottom: 15, boxSizing: "border-box" }}
           />
           {error && <p style={{ color: "#dc3545", fontSize: "0.85rem", marginBottom: 10 }}>{error}</p>}
-          <button type="submit" style={{ width: "100%", padding: 14, background: "#1a472a", color: "#fff", border: "none", borderRadius: 8, fontSize: "1rem", fontWeight: 600, cursor: "pointer" }}>
-            Access Logs
+          <button type="submit" disabled={loading} style={{ width: "100%", padding: 14, background: loading ? "#2d5a3f" : "#1a472a", color: "#fff", border: "none", borderRadius: 8, fontSize: "1rem", fontWeight: 600, cursor: loading ? "not-allowed" : "pointer" }}>
+            {loading ? "Verifying..." : "Access Logs"}
           </button>
         </form>
       </div>
