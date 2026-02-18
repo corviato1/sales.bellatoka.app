@@ -109,7 +109,7 @@ const SalesPage = () => {
         <div className="container">
           <div className="carousel-grid">
             <div className="carousel-wrapper">
-              <h3>Our Craft</h3>
+              <h3>Our Facility</h3>
               <div className="carousel">
                 <div className="carousel-track" style={{ transform: `translateX(-${plantCarouselIndex * 100}%)` }}>
                   {plantImages.map((img, idx) => (
@@ -132,7 +132,7 @@ const SalesPage = () => {
             </div>
 
             <div className="carousel-wrapper">
-              <h3>The Experience</h3>
+              <h3>Our Offerings</h3>
               <div className="carousel">
                 <div className="carousel-track" style={{ transform: `translateX(-${experienceCarouselIndex * 100}%)` }}>
                   {experienceImages.map((img, idx) => (
@@ -156,6 +156,70 @@ const SalesPage = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+            <section className="partnership-section">
+        <div className="container">
+          <h2>Available Contracts</h2>
+          <p className="section-intro">
+            We don't sell to multiple distributors each week. We partner with one distributor per strain 
+            for guaranteed weekly supply and unmatched consistency.
+          </p>
+
+          <div className="partnership-grid">
+            <div className="partnership-card">
+              <div className="card-icon">📜</div>
+              <h3>12 Month Contract</h3>
+              <p>⏳ Weekly Fulfilment</p>
+              <p>🔒 Pro Rated at locked in price</p>
+              <p> • 100% Small Batch Allocation</p>
+              <p> • Custom Deconomation Option</p>
+              <p> • Custom Terpene Option</p>
+              <p> • Commercial Admin Account</p>
+              <p> • Custom Branding</p>
+              <p> • Vesting API rights</p>
+              <p className="contract-id">ID: 3.1.26</p>
+            </div>
+
+            <div className="partnership-card">
+              <div className="card-icon">📜</div>
+              <h3>24 Month Contract</h3>
+              <p>⏳ Weekly Fulfilment</p>
+              <p>🔒 Pro Rated at locked in price</p>
+              <p> • 100% Small Batch Allocation</p>
+              <p> • Custom Deconomation Option</p>
+              <p> • Custom Terpene Option</p>
+              <p> • Commercial Admin Account</p>
+              <p> • Custom Branding</p>
+              <p> • Vesting API rights</p>
+              <p className="contract-id">ID: 3.2.26</p>
+            </div>
+
+            <div className="partnership-card">
+              <div className="card-icon">📜</div>
+              <h3>36 Month Contract</h3>
+              <p>⏳ Weekly Fulfilment</p>
+              <p>🔒 Pro Rated at locked in price</p>
+              <p> • 100% Small Batch Allocation</p>
+              <p> • Custom Deconomation Option</p>
+              <p> • Custom Terpene Option</p>
+              <p> • Commercial Admin Account</p>
+              <p> • Custom Branding</p>
+              <p> • Fully Vested API rights</p>
+              <p className="contract-id">ID: 3.31.26</p>
+            </div>
+
+          </div>
+
+          <div className="data-vesting-note">
+            <h4>Data Ownership & Vesting</h4>
+            <p>
+              All cultivation data generated during your partnership is yours to leverage. After 2 years, 
+              you gain full ownership with the option to sell or license this data. If we help market the 
+              data sale, we split proceeds 50/50.
+            </p>
           </div>
         </div>
       </section>
