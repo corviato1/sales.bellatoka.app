@@ -24,12 +24,12 @@ exports.handler = async (event) => {
     };
   }
 
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  if (!adminPassword) {
+  const dashboardPassword = process.env.DASHBOARD_PASSWORD;
+  if (!dashboardPassword) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Server misconfigured. ADMIN_PASSWORD not set.' }),
+      body: JSON.stringify({ error: 'Server misconfigured. DASHBOARD_PASSWORD not set.' }),
     };
   }
 
@@ -54,7 +54,7 @@ exports.handler = async (event) => {
   }
 
   const inputBuf = Buffer.from(password);
-  const correctBuf = Buffer.from(adminPassword);
+  const correctBuf = Buffer.from(dashboardPassword);
 
   if (inputBuf.length !== correctBuf.length) {
     return {
