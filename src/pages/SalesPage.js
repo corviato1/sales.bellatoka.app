@@ -584,7 +584,8 @@ const SalesPage = () => {
               <div className="dashboard-feature-icon">🎨</div>
               <h3>Custom End-User Frontend</h3>
               <p>
-                A, per harvest, one-page custom frontend experience built for your customers, branded to your specifications and powered by live data.
+                A one-page custom frontend experience built for your customers —
+                branded to your specifications and powered by live data.
               </p>
             </div>
             <div className="dashboard-feature-card">
@@ -689,11 +690,23 @@ const SalesPage = () => {
               </button>
             </div>
             <div className="pdf-modal-body">
-              <iframe
-                src={`${process.env.PUBLIC_URL}/docs/pesticide-list.pdf`}
-                title="Pesticide List PDF"
-                className="pdf-modal-iframe"
-              />
+              <object
+                data={`${process.env.PUBLIC_URL}/docs/pesticide-list.pdf`}
+                type="application/pdf"
+                className="pdf-modal-object"
+              >
+                <div className="pdf-modal-fallback">
+                  <p>Your browser cannot display this PDF inline.</p>
+                  <a
+                    href={`${process.env.PUBLIC_URL}/docs/pesticide-list.pdf`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pdf-modal-download"
+                  >
+                    Open PDF in New Tab
+                  </a>
+                </div>
+              </object>
             </div>
             <div className="pdf-modal-footer">
               <a
