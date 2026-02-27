@@ -3,7 +3,7 @@ import "../styles/SalesPage.css";
 
 const SalesPage = () => {
   const [plantCarouselIndex, setPlantCarouselIndex] = useState(0);
-  const [dashboardCarouselIndex, setDashboardCarouselIndex] = useState(0);
+
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [terpeneRequest, setTerpeneRequest] = useState("");
   const [showPesticideModal, setShowPesticideModal] = useState(false);
@@ -23,33 +23,6 @@ const SalesPage = () => {
       src: "/images/carousel/redplant.jpg",
       alt: "Small-batch craft flower",
       caption: "R&D Facility 3 — Small-batch quality",
-    },
-  ];
-
-  const dashboardImages = [
-    {
-      src: "/images/mockups/admin-dashboard-mockup.png",
-      alt: "Admin Dashboard",
-      caption: "Admin Dashboard — Full control over your account",
-      isExample: true,
-    },
-    {
-      src: "/images/mockups/analytics-dashboard-mockup.png",
-      alt: "Analytics Dashboard",
-      caption: "Analytics — Real-time cultivation data",
-      isExample: true,
-    },
-    {
-      src: "/images/mockups/consumer-dashboard-mockup.png",
-      alt: "Consumer Frontend",
-      caption: "Custom Frontend — Built for your end users",
-      isExample: true,
-    },
-    {
-      src: "/images/mockups/reporting-interface-mockup.png",
-      alt: "Reporting Interface",
-      caption: "Custom Reports — Filter by any metric",
-      isExample: true,
     },
   ];
 
@@ -97,12 +70,8 @@ const SalesPage = () => {
     const plantTimer = setInterval(() => {
       setPlantCarouselIndex((prev) => (prev + 1) % plantImages.length);
     }, 5000);
-    const dashTimer = setInterval(() => {
-      setDashboardCarouselIndex((prev) => (prev + 1) % dashboardImages.length);
-    }, 6000);
     return () => {
       clearInterval(plantTimer);
-      clearInterval(dashTimer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
