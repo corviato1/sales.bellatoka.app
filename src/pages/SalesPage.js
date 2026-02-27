@@ -1,25 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "../styles/SalesPage.css";
 
 const SalesPage = () => {
   const [plantCarouselIndex, setPlantCarouselIndex] = useState(0);
   const [dashboardCarouselIndex, setDashboardCarouselIndex] = useState(0);
-  const [formData, setFormData] = useState({
-    businessName: "",
-    contactName: "",
-    email: "",
-    phone: "",
-    licenseNumber: "",
-    preferredContractLength: "",
-    inquiryType: "info",
-    message: "",
-  });
+  const [headerScrolled, setHeaderScrolled] = useState(false);
   const [terpeneRequest, setTerpeneRequest] = useState("");
 
   const plantImages = [
-    { src: "/images/carousel/plant-flowering.png", alt: "P85 strain in flowering stage", caption: "P85 — Peak flowering excellence" },
-    { src: "/images/carousel/facility-interior.png", alt: "R&D Facility 3 interior", caption: "R&D Facility 3 — Craft cultivation environment" },
     { src: "/images/carousel/redplant.jpg", alt: "Premium craft cannabis flower", caption: "Hand-selected premium flower" },
+    { src: "/images/carousel/redplant.jpg", alt: "P85 strain close-up", caption: "P85 — Craft cultivation excellence" },
+    { src: "/images/carousel/redplant.jpg", alt: "Small-batch craft flower", caption: "R&D Facility 3 — Small-batch quality" },
   ];
 
   const dashboardImages = [
@@ -38,6 +29,15 @@ const SalesPage = () => {
     { name: "Granddaddy Purple", profile: "Grape, Berry, Sweet", type: "Indica" },
   ];
 
+  const handleScroll = useCallback(() => {
+    setHeaderScrolled(window.scrollY > 80);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
   useEffect(() => {
     const plantTimer = setInterval(() => {
       setPlantCarouselIndex((prev) => (prev + 1) % plantImages.length);
@@ -52,35 +52,6 @@ const SalesPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const inquiry = {
-      id: Date.now().toString(),
-      ...formData,
-      status: "new",
-      submittedAt: new Date().toISOString(),
-    };
-    const existing = JSON.parse(localStorage.getItem("bt_inquiries") || "[]");
-    existing.unshift(inquiry);
-    localStorage.setItem("bt_inquiries", JSON.stringify(existing));
-    const typeLabel = formData.inquiryType === "apply" ? "Contract Application" : "Information Request";
-    alert(`Thank you for your ${typeLabel}! Our team will contact you within 24 hours.`);
-    setFormData({
-      businessName: "",
-      contactName: "",
-      email: "",
-      phone: "",
-      licenseNumber: "",
-      preferredContractLength: "",
-      inquiryType: "info",
-      message: "",
-    });
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleTerpeneRequest = (e) => {
     e.preventDefault();
     alert(`Thank you! We've received your request for: ${terpeneRequest}. We'll confirm availability shortly.`);
@@ -90,11 +61,11 @@ const SalesPage = () => {
   return (
     <div className="sales-page">
 
-      <header className="site-header">
+      <header className={`site-header ${headerScrolled ? "site-header-scrolled" : "site-header-transparent"}`}>
         <a href="https://bellatoka.app" className="site-logo">Bella Toka</a>
         <nav className="site-nav">
           <a href="/dashboard">Dashboard</a>
-          <a href="#contact">Contact</a>
+          <a href="/contact">Contact</a>
         </nav>
       </header>
 
@@ -110,8 +81,8 @@ const SalesPage = () => {
               Payment at crop fulfillment, perpetual data access, and white-glove partnership support.
             </p>
             <div className="intro-cta-group">
-              <a href="#contact" className="cta-button-primary" onClick={() => setFormData(prev => ({...prev, inquiryType: "info"}))}>Request More Info</a>
-              <a href="#contact" className="cta-button-secondary" onClick={() => setFormData(prev => ({...prev, inquiryType: "apply"}))}>Apply for Contract</a>
+              <a href="/contact" className="cta-button-primary">Request More Info</a>
+              <a href="/contact" className="cta-button-secondary">Apply for Contract</a>
             </div>
           </div>
         </div>
@@ -121,87 +92,54 @@ const SalesPage = () => {
         <div className="page-container">
           <h2 className="section-heading">Crop Futures Contracts</h2>
           <p className="section-description">
-            We partner with one distributor per strain for guaranteed weekly supply.
             All contracts are cannabis crop futures — payment is made at the time of each crop fulfillment.
           </p>
 
-          <div className="contracts-grid">
-            <div className="contract-card">
-              <div className="contract-card-icon">📜</div>
-              <h3>12 Month Contract</h3>
-              <div className="contract-card-details">
-                <p className="contract-detail-item">Weekly Fulfillment</p>
-                <p className="contract-detail-item">Pro-rated at $X / lb</p>
-                <p className="contract-detail-item">Expected yield: ~6 lbs / week</p>
-                <p className="contract-detail-item">Payment at crop fulfillment</p>
-              </div>
-              <ul className="contract-features-list">
-                <li>100% Small Batch Allocation</li>
-                <li>Custom Denomination Option</li>
-                <li>Custom Terpene Option</li>
-                <li>Commercial Admin Account</li>
-                <li>Custom Branding</li>
-                <li>Vesting API Rights</li>
-              </ul>
-              <span className="contract-id-label">ID: 3.1.26</span>
-            </div>
-
-            <div className="contract-card featured-contract">
-              <div className="contract-card-icon">📜</div>
-              <h3>24 Month Contract</h3>
-              <div className="contract-card-details">
-                <p className="contract-detail-item">Weekly Fulfillment</p>
-                <p className="contract-detail-item">Pro-rated at $X / lb</p>
-                <p className="contract-detail-item">Expected yield: ~6 lbs / week</p>
-                <p className="contract-detail-item">Payment at crop fulfillment</p>
-              </div>
-              <ul className="contract-features-list">
-                <li>100% Small Batch Allocation</li>
-                <li>Custom Denomination Option</li>
-                <li>Custom Terpene Option</li>
-                <li>Commercial Admin Account</li>
-                <li>Custom Branding</li>
-                <li>Vesting API Rights</li>
-              </ul>
-              <span className="contract-id-label">ID: 3.2.26</span>
-            </div>
-
-            <div className="contract-card">
-              <div className="contract-card-icon">📜</div>
-              <h3>36 Month Contract</h3>
-              <div className="contract-card-details">
-                <p className="contract-detail-item">Weekly Fulfillment</p>
-                <p className="contract-detail-item">Pro-rated at $X / lb</p>
-                <p className="contract-detail-item">Expected yield: ~6 lbs / week</p>
-                <p className="contract-detail-item">Payment at crop fulfillment</p>
-              </div>
-              <ul className="contract-features-list">
-                <li>100% Small Batch Allocation</li>
-                <li>Custom Denomination Option</li>
-                <li>Custom Terpene Option</li>
-                <li>Commercial Admin Account</li>
-                <li>Custom Branding</li>
-                <li>Fully Vested API Rights</li>
-              </ul>
-              <span className="contract-id-label">ID: 3.31.26</span>
-            </div>
-          </div>
-
           <div className="contract-highlights-row">
+            <div className="contract-highlight-card contract-highlight-card-terms">
+              <div className="contract-highlight-icon">📋</div>
+              <h3>Available in 12, 24, or 36 Month Terms</h3>
+              <p>Choose the contract length that fits your business. Longer terms lock in better pricing and deeper data access.</p>
+            </div>
             <div className="contract-highlight-card">
               <div className="contract-highlight-icon">📦</div>
               <h3>Whole Crop Allocation</h3>
-              <p>Receive 100% of each weekly harvest. Expected yield: ~6 lbs per week, pro-rated at set price per pound.</p>
+              <p>Receive 100% of each harvest. Expected yield: ~6 lbs per week, pro-rated at set price per pound.</p>
             </div>
             <div className="contract-highlight-card">
               <div className="contract-highlight-icon">🔒</div>
               <h3>Exclusivity</h3>
-              <p>One distributor per strain. Your allocation is guaranteed — no competing buyers on your contracted crop.</p>
+              <p>Your allocation is guaranteed — no competing buyers on your contracted crop.</p>
             </div>
             <div className="contract-highlight-card">
               <div className="contract-highlight-icon">💰</div>
               <h3>Pricing Structure</h3>
-              <p>Locked-in price per pound for the life of your contract. Payment is due at the time of each weekly crop fulfillment.</p>
+              <p>Locked-in price per pound for the life of your contract. Payment is due at the time of each crop fulfillment.</p>
+            </div>
+            <div className="contract-highlight-card">
+              <div className="contract-highlight-icon">📅</div>
+              <h3>Fulfillment Schedule</h3>
+              <p>Consistent harvest cycles with fulfillment at crop completion. Expected yield: ~6 lbs per week.</p>
+            </div>
+            <div className="contract-highlight-card">
+              <div className="contract-highlight-icon">🏷️</div>
+              <h3>Custom Denomination</h3>
+              <p>Name your product however you choose. Full white-label or co-branded packaging options available.</p>
+            </div>
+            <div className="contract-highlight-card">
+              <div className="contract-highlight-icon">🌿</div>
+              <h3>Custom Terpene Infusion</h3>
+              <p>Complimentary terpene infusion from our Floraplex inventory. Choose from dozens of profiles or request your own.</p>
+            </div>
+            <div className="contract-highlight-card">
+              <div className="contract-highlight-icon">🖥️</div>
+              <h3>Commercial Admin Account</h3>
+              <p>Full-featured dashboard with data analytics, image catalog, and real-time crop metrics for your contract.</p>
+            </div>
+            <div className="contract-highlight-card">
+              <div className="contract-highlight-icon">🎨</div>
+              <h3>Custom Branding</h3>
+              <p>Co-branded or 100% white-label packaging. Your brand, your identity — we handle production.</p>
             </div>
           </div>
 
@@ -319,24 +257,117 @@ const SalesPage = () => {
         </div>
       </section>
 
+      <section id="inventory" className="inventory-section">
+        <div className="page-container">
+          <h2 className="section-heading">Current Inventory</h2>
+          <p className="section-description">
+            Available now — ready for immediate fulfillment.
+          </p>
+
+          <div className="inventory-strain-card">
+            <div className="inventory-strain-header">
+              <div>
+                <h3>Blue Dream</h3>
+                <span className="inventory-strain-type">Hybrid</span>
+              </div>
+              <div className="inventory-total">
+                <span className="inventory-total-value">6.5 lbs</span>
+                <span className="inventory-total-label">Total Available</span>
+              </div>
+            </div>
+            <div className="inventory-breakdown">
+              <div className="inventory-item">
+                <div className="inventory-item-weight">3 lbs</div>
+                <div className="inventory-item-label">100% Hand Trim</div>
+                <div className="inventory-item-tag inventory-item-tag-premium">Premium</div>
+              </div>
+              <div className="inventory-item">
+                <div className="inventory-item-weight">1 lb</div>
+                <div className="inventory-item-label">Machine Trim</div>
+                <div className="inventory-item-tag inventory-item-tag-standard">Standard</div>
+              </div>
+              <div className="inventory-item">
+                <div className="inventory-item-weight">2.5 lbs</div>
+                <div className="inventory-item-label">Trim</div>
+                <div className="inventory-item-tag inventory-item-tag-bulk">Bulk</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pest-management" className="pest-management-section">
+        <div className="page-container">
+          <h2 className="section-heading">Pest Management</h2>
+          <p className="section-description">
+            We use only approved, compliant pest management products for indoor cannabis cultivation.
+            Full transparency on every product applied to your crop.
+          </p>
+
+          <div className="pest-products-grid">
+            <div className="pest-product-card">
+              <div className="pest-product-icon">🌿</div>
+              <h3>Neem Oil</h3>
+              <p>Natural broad-spectrum insecticide and fungicide derived from the neem tree. Effective against mites, aphids, and whiteflies.</p>
+              <a href="https://www.google.com/search?q=neem+oil+cannabis+cultivation" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
+            </div>
+            <div className="pest-product-card">
+              <div className="pest-product-icon">🛡️</div>
+              <h3>Regalia CG Biofungicide</h3>
+              <p>Plant-based biofungicide that activates the plant's natural defense mechanisms against powdery mildew and other fungal diseases.</p>
+              <a href="https://www.google.com/search?q=Regalia+CG+Biofungicide+cannabis" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
+            </div>
+            <div className="pest-product-card">
+              <div className="pest-product-icon">🐛</div>
+              <h3>Molt-X</h3>
+              <p>Botanical insecticide containing azadirachtin that disrupts insect growth cycles. Targets larvae and immature insects without harming beneficial organisms.</p>
+              <a href="https://www.google.com/search?q=Molt-X+insecticide+cannabis" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
+            </div>
+            <div className="pest-product-card">
+              <div className="pest-product-icon">🧪</div>
+              <h3>The Amazing Doctor Zymes</h3>
+              <p>All-natural citric acid-based solution for eliminating soft-bodied insects and mold. Safe to use up to the day of harvest.</p>
+              <a href="https://www.google.com/search?q=Amazing+Doctor+Zymes+cannabis" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
+            </div>
+          </div>
+
+          <div className="pest-compliance-banner">
+            <p>
+              All products used are approved for indoor cannabis cultivation in California.{" "}
+              <a href="https://www.cdfa.ca.gov/calcannabis/training/docs/pesticides-702.pdf" target="_blank" rel="noopener noreferrer">
+                View Full List of Legal Pesticides for Indoor Cannabis Cultivation →
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="terpene-section">
         <div className="page-container">
           <h2 className="section-heading">Custom Terpene Infusion</h2>
           <p className="section-description">
-            Our Yofumo decontamination process ensures the highest safety standards. As part of
-            this process, we offer complimentary terpene infusion from our Floraplex inventory.
+            Every contract includes complimentary terpene infusion — customize the aromatic profile of your product at no additional cost.
           </p>
 
-          <div className="terpene-process-card">
-            <h3>How It Works</h3>
-            <p>
-              The Yofumo decontamination machine reduces natural terpene intensity. Over 4 days
-              (±1 day), we can reintroduce terpenes of your choice at no additional cost.
-              This optional service lets you customize the aromatic profile of your product.
-            </p>
+          <div className="terpene-overview-grid">
+            <div className="terpene-overview-card">
+              <div className="terpene-overview-icon">🔬</div>
+              <h3>Yofumo Decontamination</h3>
+              <p>Our decontamination process ensures the highest safety standards while preparing the flower for terpene reintroduction.</p>
+            </div>
+            <div className="terpene-overview-card">
+              <div className="terpene-overview-icon">💧</div>
+              <h3>Floraplex Terpenes</h3>
+              <p>We source from Floraplex — a trusted supplier of strain-specific and custom terpene blends for the cannabis industry.</p>
+            </div>
+            <div className="terpene-overview-card">
+              <div className="terpene-overview-icon">⏱️</div>
+              <h3>4-Day Process</h3>
+              <p>Terpene infusion takes approximately 4 days (±1 day). Choose your profile during contract setup or change it between harvests.</p>
+            </div>
           </div>
 
-          <h3 className="terpene-available-heading">Available Terpene Profiles</h3>
+          <h3 className="terpene-available-heading">Available Profiles</h3>
           <div className="terpene-options-grid">
             {inStockTerpenes.map((terpene, idx) => (
               <div key={idx} className="terpene-option-card">
@@ -348,7 +379,7 @@ const SalesPage = () => {
           </div>
 
           <div className="terpene-request-form-wrapper">
-            <h3>Request Specific Terpenes</h3>
+            <h3>Request a Custom Profile</h3>
             <p>Don't see what you need? Request any product from <a href="https://buyterpenesonline.com" target="_blank" rel="noopener noreferrer">Floraplex (buyterpenesonline.com)</a></p>
             <form onSubmit={handleTerpeneRequest} className="terpene-request-form">
               <input
@@ -474,175 +505,24 @@ const SalesPage = () => {
 
       <section className="support-section">
         <div className="page-container">
-          <h2 className="section-heading">White-Glove Partnership Support</h2>
-          <div className="support-options-grid">
-            <div className="support-option-card">
-              <div className="support-option-icon">👤</div>
-              <h3>Dedicated Account Manager</h3>
-              <p>Your single point of contact for everything — from order questions to strategic planning.</p>
-            </div>
-            <div className="support-option-card">
-              <div className="support-option-icon">📧</div>
-              <h3>Priority Communication</h3>
-              <p>Reach us anytime via email. Phone support available upon request for urgent matters.</p>
-            </div>
-            <div className="support-option-card">
-              <div className="support-option-icon">📊</div>
-              <h3>Quarterly Business Reviews</h3>
-              <p>Data-driven insights on product performance, market trends, and growth opportunities.</p>
-            </div>
-            <div className="support-option-card">
-              <div className="support-option-icon">🎨</div>
-              <h3>Marketing Support</h3>
-              <p>Social media assets, product photography, and promotional materials included with your partnership.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" className="contact-section">
-        <div className="page-container">
-          <h2 className="section-heading">Get Started</h2>
+          <h2 className="section-heading">Partnership Support</h2>
           <p className="section-description">
-            Ready to secure your exclusive weekly supply of premium craft cannabis?
-            Choose your inquiry type and our team will contact you within 24 hours.
+            Every contract includes a dedicated account manager, priority communication,
+            quarterly business reviews, and marketing support.
           </p>
-
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <div className="inquiry-type-selector">
-              <label
-                className={`inquiry-type-option ${formData.inquiryType === "info" ? "inquiry-type-active" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="inquiryType"
-                  value="info"
-                  checked={formData.inquiryType === "info"}
-                  onChange={handleChange}
-                />
-                <span className="inquiry-type-label">Request More Info</span>
-                <span className="inquiry-type-desc">Learn about our crop futures and partnership model</span>
-              </label>
-              <label
-                className={`inquiry-type-option ${formData.inquiryType === "apply" ? "inquiry-type-active" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name="inquiryType"
-                  value="apply"
-                  checked={formData.inquiryType === "apply"}
-                  onChange={handleChange}
-                />
-                <span className="inquiry-type-label">Apply for Contract</span>
-                <span className="inquiry-type-desc">Begin the contract application process</span>
-              </label>
-            </div>
-
-            <div className="form-field-row">
-              <div className="form-field-group">
-                <label htmlFor="businessName">Business Name *</label>
-                <input
-                  type="text"
-                  id="businessName"
-                  name="businessName"
-                  value={formData.businessName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-field-group">
-                <label htmlFor="licenseNumber">License Number{formData.inquiryType === "apply" ? " *" : ""}</label>
-                <input
-                  type="text"
-                  id="licenseNumber"
-                  name="licenseNumber"
-                  value={formData.licenseNumber}
-                  onChange={handleChange}
-                  required={formData.inquiryType === "apply"}
-                  placeholder=""
-                />
-              </div>
-            </div>
-
-            <div className="form-field-row">
-              <div className="form-field-group">
-                <label htmlFor="contactName">Contact Name *</label>
-                <input
-                  type="text"
-                  id="contactName"
-                  name="contactName"
-                  value={formData.contactName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-field-group">
-                <label htmlFor="email">Email *</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-field-row">
-              <div className="form-field-group">
-                <label htmlFor="phone">Phone Number</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-field-group">
-                <label htmlFor="preferredContractLength">Preferred Contract Length</label>
-                <select
-                  id="preferredContractLength"
-                  name="preferredContractLength"
-                  value={formData.preferredContractLength}
-                  onChange={handleChange}
-                >
-                  <option value="">Select...</option>
-                  <option value="12-month">12 Months</option>
-                  <option value="24-month">24 Months</option>
-                  <option value="36-month">36 Months</option>
-                  <option value="discuss">Let's Discuss</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="form-field-group form-field-full-width">
-              <label htmlFor="message">Tell Us About Your Business</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="5"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="What interests you about our crop futures? Questions about P85, terpene customization, dashboard features, or data services?"
-              ></textarea>
-            </div>
-
-            <button type="submit" className="form-submit-button">
-              {formData.inquiryType === "apply" ? "Submit Contract Application" : "Request More Information"}
-            </button>
-          </form>
+          <div className="support-cta">
+            <a href="/contact" className="cta-button-primary">Get in Touch</a>
+          </div>
         </div>
       </section>
 
       <footer className="site-footer">
         <div className="page-container">
-          <p>Bella Toka R&D Facility 3 | Sonoma County, California</p>
+          <p>Bella Toka | Sonoma County, California</p>
           <p className="footer-contact-link">
             <a href="mailto:contact@bellatoka.com">contact@bellatoka.com</a>
           </p>
-          <p className="footer-tagline">Craft Cannabis Crop Futures — First in Class</p>
+          <p className="footer-tagline">Craft Cannabis Crop Futures</p>
         </div>
       </footer>
     </div>

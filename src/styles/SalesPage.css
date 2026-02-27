@@ -4,27 +4,62 @@
 }
 
 .site-header {
-  background: #fff;
   padding: 20px 40px;
-  border-bottom: 1px solid #e9ecef;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-bottom 0.3s ease;
+}
+
+.site-header-transparent {
+  background: transparent;
+  border-bottom: 1px solid transparent;
+}
+
+.site-header-transparent .site-logo {
+  color: #fff;
+}
+
+.site-header-transparent .site-nav a {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.site-header-transparent .site-nav a:hover {
+  color: #fff;
+}
+
+.site-header-scrolled {
+  background: #fff;
+  border-bottom: 1px solid #e9ecef;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.site-header-scrolled .site-logo {
+  color: #1a472a;
+}
+
+.site-header-scrolled .site-nav a {
+  color: #1a472a;
+}
+
+.site-header-scrolled .site-nav a:hover {
+  color: #5cb85c;
 }
 
 .site-logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a472a;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .site-logo:hover {
-  color: #2d5a3f;
+  opacity: 0.85;
 }
 
 .site-nav {
@@ -33,15 +68,10 @@
 }
 
 .site-nav a {
-  color: #1a472a;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
   transition: color 0.3s ease;
-}
-
-.site-nav a:hover {
-  color: #5cb85c;
 }
 
 .page-container {
@@ -182,87 +212,6 @@
   background: #fff;
 }
 
-.contracts-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  margin-bottom: 50px;
-}
-
-.contract-card {
-  background: #f8f9fa;
-  padding: 35px 25px;
-  border-radius: 16px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.contract-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.contract-card.featured-contract {
-  border-color: #5cb85c;
-  background: #f0faf0;
-}
-
-.contract-card-icon {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-}
-
-.contract-card h3 {
-  color: #1a472a;
-  font-size: 1.3rem;
-  margin-bottom: 20px;
-}
-
-.contract-card-details {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.contract-detail-item {
-  color: #555;
-  font-size: 0.95rem;
-  line-height: 1.8;
-  margin: 4px 0;
-}
-
-.contract-features-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-  text-align: left;
-}
-
-.contract-features-list li {
-  padding: 6px 0 6px 25px;
-  position: relative;
-  color: #555;
-  font-size: 0.9rem;
-  line-height: 1.6;
-}
-
-.contract-features-list li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: #5cb85c;
-  font-weight: bold;
-}
-
-.contract-id-label {
-  display: block;
-  font-size: 0.75rem;
-  color: #999;
-  text-align: left;
-  margin-top: 15px;
-}
-
 .contract-highlights-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -298,6 +247,19 @@
   color: #666;
   line-height: 1.7;
   font-size: 0.95rem;
+}
+
+.contract-highlight-card-terms {
+  background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
+  color: #fff;
+}
+
+.contract-highlight-card-terms h3 {
+  color: #fff;
+}
+
+.contract-highlight-card-terms p {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .data-ownership-banner {
@@ -533,28 +495,236 @@
   font-size: 1.1rem;
 }
 
-.terpene-section {
+.inventory-section {
+  padding: 80px 0;
+  background: #fff;
+}
+
+.inventory-strain-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #f8f9fa;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.inventory-strain-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 35px;
+  background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
+  color: #fff;
+}
+
+.inventory-strain-header h3 {
+  font-size: 1.6rem;
+  margin-bottom: 5px;
+}
+
+.inventory-strain-type {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.inventory-total {
+  text-align: right;
+}
+
+.inventory-total-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.inventory-total-label {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.inventory-breakdown {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.inventory-item {
+  padding: 30px 25px;
+  text-align: center;
+  border-right: 1px solid #e9ecef;
+}
+
+.inventory-item:last-child {
+  border-right: none;
+}
+
+.inventory-item-weight {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a472a;
+  margin-bottom: 8px;
+}
+
+.inventory-item-label {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.inventory-item-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.inventory-item-tag-premium {
+  background: #e8f5e9;
+  color: #2d5a3f;
+}
+
+.inventory-item-tag-standard {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.inventory-item-tag-bulk {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.pest-management-section {
   padding: 80px 0;
   background: #f8f9fa;
 }
 
-.terpene-process-card {
+.pest-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.pest-product-card {
   background: #fff;
-  padding: 30px 40px;
+  padding: 35px 25px;
   border-radius: 12px;
-  border-left: 4px solid #1a472a;
-  margin-bottom: 50px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
 }
 
-.terpene-process-card h3 {
-  color: #1a472a;
+.pest-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.pest-product-icon {
+  font-size: 2.5rem;
   margin-bottom: 15px;
 }
 
-.terpene-process-card p {
-  color: #555;
+.pest-product-card h3 {
+  color: #1a472a;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.pest-product-card p {
+  color: #666;
   line-height: 1.7;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+}
+
+.pest-product-link {
+  color: #1a472a;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.pest-product-link:hover {
+  color: #5cb85c;
+}
+
+.pest-compliance-banner {
+  background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
+  color: #fff;
+  padding: 25px 35px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.pest-compliance-banner p {
+  opacity: 0.95;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.pest-compliance-banner a {
+  color: #90c9a7;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.pest-compliance-banner a:hover {
+  color: #fff;
+}
+
+.terpene-section {
+  padding: 80px 0;
+  background: #fff;
+}
+
+.terpene-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.terpene-overview-card {
+  background: #f8f9fa;
+  padding: 35px 25px;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.terpene-overview-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.terpene-overview-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.terpene-overview-card h3 {
+  color: #1a472a;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.terpene-overview-card p {
+  color: #666;
+  line-height: 1.7;
+  font-size: 0.95rem;
 }
 
 .terpene-available-heading {
@@ -572,7 +742,7 @@
 }
 
 .terpene-option-card {
-  background: #fff;
+  background: #f8f9fa;
   padding: 25px 20px;
   border-radius: 12px;
   text-align: center;
@@ -624,7 +794,7 @@
 }
 
 .terpene-request-form-wrapper {
-  background: #fff;
+  background: #f8f9fa;
   padding: 40px;
   border-radius: 12px;
   text-align: center;
@@ -685,7 +855,7 @@
 
 .dashboard-section {
   padding: 80px 0;
-  background: #fff;
+  background: #f8f9fa;
 }
 
 .dashboard-features-grid {
@@ -696,7 +866,7 @@
 }
 
 .dashboard-feature-card {
-  background: #f8f9fa;
+  background: #fff;
   padding: 35px 25px;
   border-radius: 12px;
   text-align: center;
@@ -758,7 +928,7 @@
 }
 
 .dashboard-api-category {
-  background: #f8f9fa;
+  background: #fff;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
@@ -794,7 +964,7 @@
 }
 
 .support-section {
-  padding: 80px 0;
+  padding: 60px 0;
   background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
   color: #fff;
 }
@@ -803,35 +973,21 @@
   color: #fff;
 }
 
-.support-options-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  margin-top: 50px;
+.support-section .section-description {
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.support-option-card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 35px 30px;
-  border-radius: 12px;
+.support-cta {
   text-align: center;
-  backdrop-filter: blur(10px);
+  margin-top: 10px;
 }
 
-.support-option-icon {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
+.support-cta .cta-button-primary {
+  display: inline-block;
 }
 
-.support-option-card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-}
-
-.support-option-card p {
-  opacity: 0.9;
-  line-height: 1.6;
-  font-size: 0.95rem;
+.contact-page-section {
+  padding-top: 120px;
 }
 
 .contact-section {
@@ -983,14 +1139,10 @@
 @media (max-width: 768px) {
   .site-header {
     padding: 15px 20px;
-    flex-direction: column;
-    gap: 10px;
   }
 
   .site-nav {
     gap: 15px;
-    flex-wrap: wrap;
-    justify-content: center;
   }
 
   .site-nav a {
@@ -1032,10 +1184,6 @@
     text-align: center;
   }
 
-  .contracts-grid {
-    grid-template-columns: 1fr;
-  }
-
   .contract-highlights-row {
     grid-template-columns: 1fr;
   }
@@ -1047,11 +1195,36 @@
   .contracts-section,
   .facility-section,
   .product-section,
+  .inventory-section,
+  .pest-management-section,
   .terpene-section,
   .dashboard-section,
   .support-section,
   .contact-section {
     padding: 50px 0;
+  }
+
+  .inventory-breakdown {
+    grid-template-columns: 1fr;
+  }
+
+  .inventory-item {
+    border-right: none;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .inventory-item:last-child {
+    border-bottom: none;
+  }
+
+  .inventory-strain-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .inventory-total {
+    text-align: center;
   }
 
   .section-heading {
@@ -1067,7 +1240,13 @@
   .facility-highlights-grid,
   .dashboard-features-grid,
   .dashboard-api-grid,
-  .support-options-grid {
+  .support-options-grid,
+  .pest-products-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .terpene-overview-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
@@ -1111,12 +1290,9 @@
 
   .data-ownership-banner,
   .dashboard-data-access-banner,
-  .terpene-request-form-wrapper {
+  .terpene-request-form-wrapper,
+  .pest-compliance-banner {
     padding: 25px 20px;
-  }
-
-  .terpene-process-card {
-    padding: 20px;
   }
 
   .page-container {
@@ -1162,15 +1338,18 @@
   .dashboard-feature-card,
   .contract-highlight-card,
   .dashboard-api-category,
-  .support-option-card {
+  .support-option-card,
+  .pest-product-card,
+  .terpene-overview-card {
     padding: 25px 20px;
   }
 
-  .contract-card-icon,
+  .contract-highlight-icon,
   .facility-highlight-icon,
   .dashboard-feature-icon,
   .support-option-icon,
-  .contract-highlight-icon {
+  .pest-product-icon,
+  .terpene-overview-icon {
     font-size: 2rem;
   }
 

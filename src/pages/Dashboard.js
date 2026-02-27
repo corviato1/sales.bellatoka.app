@@ -112,15 +112,6 @@ const mockData = {
           <div className="mock-bar-row"><span className="mock-bar-label">May</span><div className="mock-bar" style={{width: "88%"}}><span>26.3</span></div></div>
           <div className="mock-bar-row"><span className="mock-bar-label">Jun</span><div className="mock-bar" style={{width: "95%"}}><span>28.5</span></div></div>
         </div>
-        <h4>Sales Breakdown</h4>
-        <table className="mock-table">
-          <thead><tr><th>Channel</th><th>Revenue</th><th>Units</th><th>Trend</th></tr></thead>
-          <tbody>
-            <tr><td>Direct Contract</td><td>$142,800</td><td>168 lbs</td><td>↑ 12%</td></tr>
-            <tr><td>Wholesale</td><td>$67,200</td><td>96 lbs</td><td>↑ 5%</td></tr>
-            <tr><td>Premium Reserve</td><td>$38,500</td><td>35 lbs</td><td>↑ 22%</td></tr>
-          </tbody>
-        </table>
         <h4>Current Grow Cycle — Week 7 of 10</h4>
         <div className="mock-progress-bar">
           <div className="mock-progress-fill" style={{width: "70%"}}></div>
@@ -253,16 +244,23 @@ const mockData = {
                   <span className="mock-product-badge">In Stock</span>
                 </div>
               </div>
+              <div className="mock-qr-section">
+                <div className="mock-qr-placeholder">QR</div>
+                <div className="mock-qr-details">
+                  <h4>QR Code Lab Results</h4>
+                  <p>Each package includes a unique QR code linking directly to verified lab results, terpene profiles, and COAs for that specific batch.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <h4>Customization Options</h4>
+        <h4>What You Get</h4>
         <div className="mock-options-list">
+          <div className="mock-option-item"><span className="mock-option-check">✓</span> Static one-page web document — branded to your specs</div>
+          <div className="mock-option-item"><span className="mock-option-check">✓</span> Custom QR code linking to verified lab results per batch</div>
           <div className="mock-option-item"><span className="mock-option-check">✓</span> Custom domain & branding</div>
-          <div className="mock-option-item"><span className="mock-option-check">✓</span> Live inventory sync</div>
-          <div className="mock-option-item"><span className="mock-option-check">✓</span> Embedded lab results</div>
-          <div className="mock-option-item"><span className="mock-option-check">✓</span> Order request forms</div>
-          <div className="mock-option-item"><span className="mock-option-check">✓</span> Mobile responsive</div>
+          <div className="mock-option-item"><span className="mock-option-check">✓</span> Embedded lab results & terpene profiles</div>
+          <div className="mock-option-item"><span className="mock-option-check">✓</span> Mobile responsive design</div>
         </div>
       </div>
     ),
@@ -369,56 +367,6 @@ const mockData = {
       </div>
     ),
   },
-  api: {
-    title: "API Access",
-    content: (
-      <div className="modal-mock-data">
-        <div className="mock-api-key-box">
-          <label>Your API Key</label>
-          <div className="mock-api-key"><code>bt_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code></div>
-        </div>
-        <h4>Endpoints</h4>
-        <div className="mock-api-endpoints">
-          <div className="mock-api-endpoint">
-            <span className="mock-api-method mock-get">GET</span>
-            <code>/api/v1/harvests</code>
-            <span className="mock-api-desc">List all harvests</span>
-          </div>
-          <div className="mock-api-endpoint">
-            <span className="mock-api-method mock-get">GET</span>
-            <code>/api/v1/harvests/:id/lab</code>
-            <span className="mock-api-desc">Lab results for a harvest</span>
-          </div>
-          <div className="mock-api-endpoint">
-            <span className="mock-api-method mock-get">GET</span>
-            <code>/api/v1/metrics/current</code>
-            <span className="mock-api-desc">Current grow cycle metrics</span>
-          </div>
-          <div className="mock-api-endpoint">
-            <span className="mock-api-method mock-get">GET</span>
-            <code>/api/v1/images</code>
-            <span className="mock-api-desc">Image catalog listing</span>
-          </div>
-          <div className="mock-api-endpoint">
-            <span className="mock-api-method mock-post">POST</span>
-            <code>/api/v1/webhooks</code>
-            <span className="mock-api-desc">Register a webhook</span>
-          </div>
-        </div>
-        <h4>Example Response</h4>
-        <pre className="mock-code-block">{`{
-  "harvest_id": "BT-2026-0117",
-  "strain": "P85",
-  "yield_lbs": 6.2,
-  "thc_total": 28.7,
-  "terpenes_total": 3.12,
-  "status": "cured",
-  "harvest_date": "2026-01-17"
-}`}</pre>
-        <p className="mock-note">Rate limit: 1,000 requests/day · Perpetual access included with contract</p>
-      </div>
-    ),
-  },
 };
 
 function DashboardModal({ data, onClose }) {
@@ -446,12 +394,11 @@ function DashboardMain({ onLogout }) {
   };
 
   const cards = [
-    { key: "analytics", icon: "📈", title: "Data Analytics", desc: "View real-time cultivation metrics, sales trends, inventory turnover, and product performance." },
+    { key: "analytics", icon: "📈", title: "Data Analytics", desc: "Yield tracking, grow cycle progress, environmental conditions, feed schedules, and growth stage logs for every harvest." },
     { key: "images", icon: "📷", title: "Image Catalog", desc: "Browse and download high-resolution strain images, facility photos, and product photography." },
-    { key: "frontend", icon: "🎨", title: "Custom Frontend", desc: "Your one-page branded experience for end users — powered by live data from your contract." },
+    { key: "frontend", icon: "🎨", title: "Custom Frontend", desc: "A static one-page web document branded to your specifications, with custom QR codes linking to verified lab results per batch." },
     { key: "contract", icon: "📑", title: "Contract Info & Progress", desc: "Your contract details, fulfillment progress, delivery history, and key dates." },
     { key: "lab", icon: "📋", title: "Lab Results & COAs", desc: "Access lab test results, terpene profiles, and cannabinoid analysis for every harvest." },
-    { key: "api", icon: "🔗", title: "API Access", desc: "Perpetual API access to all your cultivation data. Documentation and endpoints available here." },
   ];
 
   return (
@@ -459,7 +406,6 @@ function DashboardMain({ onLogout }) {
       <header className="dashboard-header">
         <a href="/" className="dashboard-logo">Bella Toka</a>
         <div className="dashboard-header-actions">
-          <span className="dashboard-header-label">Commercial Dashboard</span>
           <button onClick={handleLogout} className="dashboard-logout-button">Sign Out</button>
         </div>
       </header>
