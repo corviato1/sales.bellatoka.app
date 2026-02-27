@@ -77,8 +77,8 @@ const SalesPage = () => {
             <h1>Cannabis Crop Futures</h1>
             <p className="intro-subtitle">Small-Batch Craft Flower for Discerning Distributors</p>
             <p className="intro-tagline">
-              Secure your exclusive weekly allocation of hand-crafted P85 flower.
-              Payment at crop fulfillment, perpetual data access, and white-glove partnership support.
+              Secure your exclusive crop allocation of Bella Toka's P85 flower.
+              Payment upon each fulfillment, perpetual access to data produced within contract period, and white-glove partnership support.
             </p>
             <div className="intro-cta-group">
               <a href="/contact" className="cta-button-primary">Request More Info</a>
@@ -99,7 +99,7 @@ const SalesPage = () => {
             <div className="contract-highlight-card contract-highlight-card-terms">
               <div className="contract-highlight-icon">📋</div>
               <h3>Available in 12, 24, or 36 Month Terms</h3>
-              <p>Choose the contract length that fits your business. Longer terms lock in better pricing and deeper data access.</p>
+              <p>Choose the contract length that fits your business.</p>
             </div>
             <div className="contract-highlight-card">
               <div className="contract-highlight-icon">📦</div>
@@ -122,9 +122,9 @@ const SalesPage = () => {
               <p>Consistent harvest cycles with fulfillment at crop completion. Expected yield: ~6 lbs per week.</p>
             </div>
             <div className="contract-highlight-card">
-              <div className="contract-highlight-icon">🏷️</div>
-              <h3>Custom Denomination</h3>
-              <p>Name your product however you choose. Full white-label or co-branded packaging options available.</p>
+              <div className="contract-highlight-icon">🔖</div>
+              <h3>White Label</h3>
+              <p>Default full white-label, or co-branded if desired. Your brand, your identity — we handle production.</p>
             </div>
             <div className="contract-highlight-card">
               <div className="contract-highlight-icon">🌿</div>
@@ -134,12 +134,12 @@ const SalesPage = () => {
             <div className="contract-highlight-card">
               <div className="contract-highlight-icon">🖥️</div>
               <h3>Commercial Admin Account</h3>
-              <p>Full-featured dashboard with data analytics, image catalog, and real-time crop metrics for your contract.</p>
+              <p>Full-featured dashboard with data analytics, image catalog, and real-time crop metrics.</p>
             </div>
             <div className="contract-highlight-card">
               <div className="contract-highlight-icon">🎨</div>
               <h3>Custom Branding</h3>
-              <p>Co-branded or 100% white-label packaging. Your brand, your identity — we handle production.</p>
+              <p>White label is standard, but custom branding assistance is available upon request.</p>
             </div>
           </div>
 
@@ -164,7 +164,7 @@ const SalesPage = () => {
             <div className="facility-highlight-card">
               <div className="facility-highlight-icon">🏭</div>
               <h3>Type 1A Licensed</h3>
-              <p>Small craft cultivation license — focused on quality over quantity with hands-on attention to every plant.</p>
+              <p>Small craft cultivation licensed R&D facility focused on quality over quantity with hands-on attention to every plant.</p>
             </div>
             <div className="facility-highlight-card">
               <div className="facility-highlight-icon">🌱</div>
@@ -309,35 +309,26 @@ const SalesPage = () => {
               <div className="pest-product-icon">🌿</div>
               <h3>Neem Oil</h3>
               <p>Natural broad-spectrum insecticide and fungicide derived from the neem tree. Effective against mites, aphids, and whiteflies.</p>
-              <a href="https://www.google.com/search?q=neem+oil+cannabis+cultivation" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
+              <a href="https://www.montereylawngarden.com/product/monterey-neem-oil-rtu/" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
             </div>
             <div className="pest-product-card">
               <div className="pest-product-icon">🛡️</div>
               <h3>Regalia CG Biofungicide</h3>
               <p>Plant-based biofungicide that activates the plant's natural defense mechanisms against powdery mildew and other fungal diseases.</p>
-              <a href="https://www.google.com/search?q=Regalia+CG+Biofungicide+cannabis" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
-            </div>
-            <div className="pest-product-card">
-              <div className="pest-product-icon">🐛</div>
-              <h3>Molt-X</h3>
-              <p>Botanical insecticide containing azadirachtin that disrupts insect growth cycles. Targets larvae and immature insects without harming beneficial organisms.</p>
-              <a href="https://www.google.com/search?q=Molt-X+insecticide+cannabis" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
+              <a href="https://profarmgroup.com/product/regalia-cg/" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
             </div>
             <div className="pest-product-card">
               <div className="pest-product-icon">🧪</div>
               <h3>The Amazing Doctor Zymes</h3>
               <p>All-natural citric acid-based solution for eliminating soft-bodied insects and mold. Safe to use up to the day of harvest.</p>
-              <a href="https://www.google.com/search?q=Amazing+Doctor+Zymes+cannabis" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
+              <a href="https://www.doctorzymes.com/pesticide-free-insecticide.php" target="_blank" rel="noopener noreferrer" className="pest-product-link">Learn More →</a>
             </div>
-          </div>
-
-          <div className="pest-compliance-banner">
-            <p>
-              All products used are approved for indoor cannabis cultivation in California.{" "}
-              <a href="https://www.cdfa.ca.gov/calcannabis/training/docs/pesticides-702.pdf" target="_blank" rel="noopener noreferrer">
-                View Full List of Legal Pesticides for Indoor Cannabis Cultivation →
-              </a>
-            </p>
+            <div className="pest-product-card">
+              <div className="pest-product-icon">🧪</div>
+              <h3>Approved Pesticide List</h3>
+              <p>While we use only Regalia and Dr. Zymes as our standard protocol for indoor cannabis cultivation, we maintain a list of all approved pesticides for full transparency.</p>
+              <a href="<popup box that shows the pdf, and a download link>" target="_blank" rel="noopener noreferrer" className="pest-product-link">View Full Legal Pesticides List →</a>
+            </div>
           </div>
         </div>
       </section>
@@ -423,32 +414,6 @@ const SalesPage = () => {
               <div className="dashboard-feature-icon">📷</div>
               <h3>Full Image Catalog</h3>
               <p>High-resolution strain images, facility photos, and product photography — all accessible and downloadable from your dashboard.</p>
-            </div>
-          </div>
-
-          <div className="dashboard-carousel-wrapper">
-            <h3 className="carousel-title">Dashboard Preview</h3>
-            <div className="image-carousel">
-              <div className="carousel-track" style={{ transform: `translateX(-${dashboardCarouselIndex * 100}%)` }}>
-                {dashboardImages.map((img, idx) => (
-                  <div key={idx} className="carousel-slide">
-                    <div className="carousel-image-container">
-                      <img src={img.src} alt={img.alt} />
-                      {img.isExample && <div className="carousel-example-badge">EXAMPLE</div>}
-                    </div>
-                    <p className="carousel-caption">{img.caption}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="carousel-dot-nav">
-                {dashboardImages.map((_, idx) => (
-                  <button
-                    key={idx}
-                    className={`carousel-dot ${idx === dashboardCarouselIndex ? "carousel-dot-active" : ""}`}
-                    onClick={() => setDashboardCarouselIndex(idx)}
-                  />
-                ))}
-              </div>
             </div>
           </div>
 
