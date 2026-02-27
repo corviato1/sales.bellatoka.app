@@ -660,6 +660,104 @@
   color: #5cb85c;
 }
 
+.pest-product-link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.pdf-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pdf-modal {
+  background: #fff;
+  border-radius: 12px;
+  width: 90vw;
+  max-width: 900px;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.pdf-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.pdf-modal-header h3 {
+  font-size: 1.1rem;
+  color: #1a472a;
+  margin: 0;
+}
+
+.pdf-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: #999;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.pdf-modal-close:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.pdf-modal-body {
+  flex: 1;
+  overflow: hidden;
+}
+
+.pdf-modal-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.pdf-modal-footer {
+  padding: 15px 25px;
+  border-top: 1px solid #e9ecef;
+  text-align: center;
+}
+
+.pdf-modal-download {
+  display: inline-block;
+  background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
+  color: #fff;
+  padding: 12px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.pdf-modal-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(26, 71, 42, 0.3);
+}
+
 .pest-compliance-banner {
   background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
   color: #fff;
