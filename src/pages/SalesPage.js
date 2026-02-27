@@ -1,30 +1,35 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/SalesPage.css";
 
+const formatImageName = (filename) => {
+  const name = filename.replace(/\.[^.]+$/, "");
+  return name
+    .replace(/[-_]/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+};
+
 const SalesPage = () => {
   const [plantCarouselIndex, setPlantCarouselIndex] = useState(0);
+  const [plantImages, setPlantImages] = useState([]);
 
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [terpeneRequest, setTerpeneRequest] = useState("");
   const [showPesticideModal, setShowPesticideModal] = useState(false);
 
-  const plantImages = [
-    {
-      src: "/images/carousel/redplant.jpg",
-      alt: "Premium craft cannabis flower",
-      caption: "Hand-selected premium flower",
-    },
-    {
-      src: "/images/carousel/redplant.jpg",
-      alt: "P85 strain close-up",
-      caption: "P85 — Craft cultivation excellence",
-    },
-    {
-      src: "/images/carousel/redplant.jpg",
-      alt: "Small-batch craft flower",
-      caption: "R&D Facility 3 — Small-batch quality",
-    },
-  ];
+  useEffect(() => {
+    fetch(`${process.env.PUBLIC_URL}/images/carousel/manifest.json`)
+      .then((res) => res.json())
+      .then((files) => {
+        setPlantImages(
+          files.map((file) => ({
+            src: `/images/carousel/${file}`,
+            alt: formatImageName(file),
+            caption: formatImageName(file),
+          }))
+        );
+      })
+      .catch(() => {});
+  }, []);
 
   const inStockTerpenes = [
     { name: "OG Kush", profile: "Earthy, Pine, Woody", type: "Indica" },
@@ -67,14 +72,14 @@ const SalesPage = () => {
   }, [showPesticideModal]);
 
   useEffect(() => {
+    if (plantImages.length === 0) return;
     const plantTimer = setInterval(() => {
       setPlantCarouselIndex((prev) => (prev + 1) % plantImages.length);
     }, 5000);
     return () => {
       clearInterval(plantTimer);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [plantImages.length]);
 
   const handleTerpeneRequest = (e) => {
     e.preventDefault();
