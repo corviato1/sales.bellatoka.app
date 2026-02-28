@@ -1,38 +1,47 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Lock, LogOut, Home, User, Settings, Save, RefreshCw, BarChart2,
-  Eye, EyeOff, TrendingUp, Globe, Mail,
+  Lock, LogOut, Home, User, Settings, Save, BarChart2,
+  Eye, EyeOff, TrendingUp, Mail,
   CheckCircle, FileText, Trash2, Terminal, ArrowLeft
 } from 'lucide-react';
 import { getLogEntries, clearLogEntries, subscribeToLogs } from '../utils/consoleCapture';
+import { secureGet, secureSet } from '../utils/storage';
 import '../styles/Admin.css';
 
-function generateMockAnalytics() {
-  const trafficByDay = [];
-  for (let i = 29; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    trafficByDay.push({
-      date: d.toISOString().split('T')[0],
-      views: Math.floor(Math.random() * 51) + 10
-    });
+function computeAnalytics(inquiries) {
+  const now = new Date();
+  const total = inquiries.length;
+  const newCount = inquiries.filter(i => i.status === 'new').length;
+  const readCount = inquiries.filter(i => i.status === 'read').length;
+  const applications = inquiries.filter(i => i.inquiryType === 'apply');
+  const infoRequests = inquiries.filter(i => i.inquiryType === 'info');
+
+  const contractLengths = { '12-month': 0, '24-month': 0, '36-month': 0, 'discuss': 0 };
+  inquiries.forEach(i => {
+    const len = i.preferredContractLength;
+    if (len && contractLengths[len] !== undefined) contractLengths[len]++;
+  });
+
+  const last30 = [];
+  for (let d = 29; d >= 0; d--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - d);
+    const key = date.toISOString().split('T')[0];
+    const count = inquiries.filter(i => i.submittedAt && i.submittedAt.startsWith(key)).length;
+    last30.push({ date: key, count });
   }
-  return {
-    totalPageViews: 1247,
-    uniqueVisitors: 423,
-    viewsToday: 34,
-    viewsThisWeek: 187,
-    viewsThisMonth: 892,
-    topPages: [
-      { page_path: '/', views: 342 },
-      { page_path: '/admin', views: 198 },
-      { page_path: '/#inquiry', views: 156 },
-      { page_path: '/#terpenes', views: 134 },
-      { page_path: '/#partnership', views: 89 },
-    ],
-    trafficByDay
-  };
+
+  let avgResponseMs = null;
+  const responded = inquiries.filter(i => i.readAt && i.submittedAt);
+  if (responded.length > 0) {
+    const totalMs = responded.reduce((sum, i) => sum + (new Date(i.readAt) - new Date(i.submittedAt)), 0);
+    avgResponseMs = totalMs / responded.length;
+  }
+
+  const recent = [...inquiries].sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)).slice(0, 5);
+
+  return { total, newCount, readCount, applications: applications.length, infoRequests: infoRequests.length, contractLengths, last30, avgResponseMs, recent, responseRate: total > 0 ? Math.round((readCount / total) * 100) : 0 };
 }
 
 function LoginForm({ onLogin }) {
@@ -198,7 +207,7 @@ function InquiriesTab() {
   const [selectedInquiry, setSelectedInquiry] = useState(null);
 
   const loadInquiries = useCallback(() => {
-    const stored = JSON.parse(localStorage.getItem('bt_inquiries') || '[]');
+    const stored = secureGet('bt_inquiries') || [];
     setInquiries(stored);
   }, []);
 
@@ -219,7 +228,7 @@ function InquiriesTab() {
     if (!window.confirm('Are you sure you want to delete this inquiry?')) return;
     const updated = inquiries.filter(inq => inq.id !== id);
     setInquiries(updated);
-    localStorage.setItem('bt_inquiries', JSON.stringify(updated));
+    secureSet('bt_inquiries', updated);
     if (selectedInquiry && selectedInquiry.id === id) setSelectedInquiry(null);
   };
 
@@ -228,7 +237,7 @@ function InquiriesTab() {
       inq.id === id ? { ...inq, status: 'read', readAt: new Date().toISOString() } : inq
     );
     setInquiries(updated);
-    localStorage.setItem('bt_inquiries', JSON.stringify(updated));
+    secureSet('bt_inquiries', updated);
   };
 
   if (selectedInquiry) {
@@ -369,102 +378,152 @@ function InquiriesTab() {
   );
 }
 
+function formatDuration(ms) {
+  if (ms == null) return '—';
+  const mins = Math.floor(ms / 60000);
+  const hrs = Math.floor(mins / 60);
+  const days = Math.floor(hrs / 24);
+  if (days > 0) return `${days}d ${hrs % 24}h`;
+  if (hrs > 0) return `${hrs}h ${mins % 60}m`;
+  if (mins > 0) return `${mins}m`;
+  return '< 1m';
+}
+
 function AnalyticsTab() {
-  const isDev = process.env.NODE_ENV === 'development';
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isDev) {
-      setTimeout(() => {
-        setData(generateMockAnalytics());
-        setLoading(false);
-      }, 600);
-    } else {
-      setLoading(false);
-    }
-  }, [isDev]);
+    const inquiries = secureGet('bt_inquiries') || [];
+    setData(computeAnalytics(inquiries));
+  }, []);
 
-  if (loading) {
-    return (
-      <div className="empty-state">
-        <RefreshCw size={32} className="spinning" />
-        <h3>Loading analytics...</h3>
-      </div>
-    );
-  }
-
-  if (!isDev && !data) {
+  if (!data || data.total === 0) {
     return (
       <>
         <div className="admin-header">
           <h1>Analytics</h1>
-          <p>Site traffic and visitor insights</p>
+          <p>Inquiry data and business insights</p>
         </div>
         <div className="admin-card">
           <div className="empty-state">
             <BarChart2 size={48} />
-            <h3>Analytics Not Connected</h3>
-            <p>Connect a live analytics provider to see real visitor data here. No mock data is shown in production.</p>
+            <h3>No Inquiry Data Yet</h3>
+            <p>Analytics will appear here once inquiries are submitted through the contact form.</p>
           </div>
         </div>
       </>
     );
   }
 
-  const maxViews = Math.max(...data.trafficByDay.map(d => d.views), 1);
+  const maxCount = Math.max(...data.last30.map(d => d.count), 1);
+  const contractEntries = Object.entries(data.contractLengths).filter(([, v]) => v > 0);
 
   return (
     <>
       <div className="admin-header">
         <h1>Analytics</h1>
-        <p>Site traffic and visitor insights {isDev && '(demo data — local only)'}</p>
+        <p>Inquiry data and business insights</p>
       </div>
 
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-label">Total Page Views</div>
-          <div className="stat-value">{data.totalPageViews.toLocaleString()}</div>
+          <div className="stat-label">Total Inquiries</div>
+          <div className="stat-value">{data.total}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">Unique Visitors</div>
-          <div className="stat-value">{data.uniqueVisitors.toLocaleString()}</div>
+          <div className="stat-label">Unread</div>
+          <div className="stat-value" style={{ color: data.newCount > 0 ? '#e67e22' : undefined }}>{data.newCount}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">Views Today</div>
-          <div className="stat-value">{data.viewsToday}</div>
+          <div className="stat-label">Response Rate</div>
+          <div className="stat-value">{data.responseRate}%</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">Views This Week</div>
-          <div className="stat-value">{data.viewsThisWeek}</div>
+          <div className="stat-label">Avg Response Time</div>
+          <div className="stat-value">{formatDuration(data.avgResponseMs)}</div>
         </div>
       </div>
 
       <div className="admin-card">
-        <h2><TrendingUp size={18} /> Traffic (Last 30 Days)</h2>
+        <h2><TrendingUp size={18} /> Inquiries (Last 30 Days)</h2>
         <div className="chart-bar-container">
-          {data.trafficByDay.map((day, i) => (
+          {data.last30.map((day, i) => (
             <div
               key={i}
               className="chart-bar"
-              style={{ height: `${(day.views / maxViews) * 100}%` }}
+              style={{ height: day.count > 0 ? `${Math.max((day.count / maxCount) * 100, 4)}%` : '0%' }}
             >
-              <div className="chart-tooltip">{day.date}: {day.views} views</div>
+              <div className="chart-tooltip">{day.date}: {day.count} {day.count === 1 ? 'inquiry' : 'inquiries'}</div>
             </div>
           ))}
         </div>
       </div>
 
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+        <div className="admin-card">
+          <h2><FileText size={18} /> Inquiry Type</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '15px' }}>
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span>Contract Applications</span>
+                <strong>{data.applications}</strong>
+              </div>
+              <div style={{ background: '#e8e8e8', borderRadius: '4px', height: '8px', overflow: 'hidden' }}>
+                <div style={{ background: '#1a472a', height: '100%', width: `${data.total > 0 ? (data.applications / data.total) * 100 : 0}%`, borderRadius: '4px' }} />
+              </div>
+            </div>
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span>Info Requests</span>
+                <strong>{data.infoRequests}</strong>
+              </div>
+              <div style={{ background: '#e8e8e8', borderRadius: '4px', height: '8px', overflow: 'hidden' }}>
+                <div style={{ background: '#5cb85c', height: '100%', width: `${data.total > 0 ? (data.infoRequests / data.total) * 100 : 0}%`, borderRadius: '4px' }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="admin-card">
+          <h2><BarChart2 size={18} /> Contract Interest</h2>
+          {contractEntries.length === 0 ? (
+            <p style={{ color: '#888', marginTop: '15px' }}>No contract preferences recorded yet.</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '15px' }}>
+              {contractEntries.map(([label, count]) => (
+                <div key={label}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                    <span>{label === 'discuss' ? 'Want to Discuss' : label}</span>
+                    <strong>{count}</strong>
+                  </div>
+                  <div style={{ background: '#e8e8e8', borderRadius: '4px', height: '8px', overflow: 'hidden' }}>
+                    <div style={{ background: '#2d5a3f', height: '100%', width: `${(count / data.total) * 100}%`, borderRadius: '4px' }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="admin-card">
-        <h2><Globe size={18} /> Top Pages</h2>
-        <ul className="analytics-top-pages">
-          {data.topPages.map((page, i) => (
-            <li key={i}>
-              <span className="page-path">{page.page_path}</span>
-              <span className="page-views">{page.views} views</span>
-            </li>
-          ))}
-        </ul>
+        <h2><Mail size={18} /> Recent Activity</h2>
+        {data.recent.length === 0 ? (
+          <p style={{ color: '#888', marginTop: '15px' }}>No recent inquiries.</p>
+        ) : (
+          <ul className="analytics-top-pages">
+            {data.recent.map((inq, i) => (
+              <li key={i}>
+                <span className="page-path">
+                  {inq.businessName || 'Unknown'} — {inq.inquiryType === 'apply' ? 'Application' : 'Info Request'}
+                </span>
+                <span className="page-views" style={{ color: inq.status === 'new' ? '#e67e22' : '#5cb85c' }}>
+                  {inq.status === 'new' ? 'New' : 'Read'} · {new Date(inq.submittedAt).toLocaleDateString()}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );
@@ -709,7 +768,7 @@ function AdminDashboard({ onLogout }) {
   const [inquiryCount, setInquiryCount] = useState(0);
 
   useEffect(() => {
-    const inquiries = JSON.parse(localStorage.getItem('bt_inquiries') || '[]');
+    const inquiries = secureGet('bt_inquiries') || [];
     setInquiryCount(inquiries.filter(i => i.status === 'new').length);
   }, [activeTab]);
 

@@ -13,7 +13,6 @@ const SalesPage = () => {
   const [plantImages, setPlantImages] = useState([]);
 
   const [headerScrolled, setHeaderScrolled] = useState(false);
-  const [terpeneRequest, setTerpeneRequest] = useState("");
   const [showPesticideModal, setShowPesticideModal] = useState(false);
 
   useEffect(() => {
@@ -31,22 +30,34 @@ const SalesPage = () => {
       .catch(() => {});
   }, []);
 
+  const [terpeneCarouselIndex, setTerpeneCarouselIndex] = useState(0);
+  const [terpeneVisible, setTerpeneVisible] = useState(3);
+
   const inStockTerpenes = [
-    { name: "OG Kush", profile: "Earthy, Pine, Woody", type: "Indica" },
-    { name: "Gelato", profile: "Sweet, Citrus, Creamy", type: "Hybrid" },
-    { name: "Sour Diesel", profile: "Diesel, Citrus, Herbal", type: "Sativa" },
-    { name: "Blue Dream", profile: "Berry, Sweet, Herbal", type: "Hybrid" },
-    {
-      name: "Girl Scout Cookies",
-      profile: "Sweet, Earthy, Mint",
-      type: "Hybrid",
-    },
-    {
-      name: "Granddaddy Purple",
-      profile: "Grape, Berry, Sweet",
-      type: "Indica",
-    },
+    { name: "OG Kush", profile: "Earthy, Pine, Woody", type: "Indica", url: "https://www.buyterpenesonline.com/terpenes-for-sale/og-kush-terpene-profile/" },
+    { name: "Gelato", profile: "Sweet, Citrus, Creamy", type: "Hybrid", url: "https://www.buyterpenesonline.com/terpenes-for-sale/gelato-terpene-profile/" },
+    { name: "Sour Diesel", profile: "Diesel, Citrus, Herbal", type: "Sativa", url: "https://www.buyterpenesonline.com/terpenes-for-sale/sour-diesel-terpene-profile/" },
+    { name: "Blue Dream", profile: "Berry, Sweet, Herbal", type: "Hybrid", url: "https://www.buyterpenesonline.com/terpenes-for-sale/blue-dream-terpene-profile/" },
+    { name: "Girl Scout Cookies", profile: "Sweet, Earthy, Mint", type: "Hybrid", url: "https://www.buyterpenesonline.com/terpenes-for-sale/cookies-terpene-profile/" },
+    { name: "Granddaddy Purple", profile: "Grape, Berry, Sweet", type: "Indica", url: "https://www.buyterpenesonline.com/terpenes-for-sale/granddaddy-purple-terpene-profile/" },
   ];
+
+  const terpeneMaxIndex = Math.max(inStockTerpenes.length - terpeneVisible, 0);
+
+  useEffect(() => {
+    const updateVisible = () => {
+      if (window.matchMedia("(max-width: 600px)").matches) setTerpeneVisible(1);
+      else if (window.matchMedia("(max-width: 900px)").matches) setTerpeneVisible(2);
+      else setTerpeneVisible(3);
+    };
+    updateVisible();
+    window.addEventListener("resize", updateVisible);
+    return () => window.removeEventListener("resize", updateVisible);
+  }, []);
+
+  useEffect(() => {
+    if (terpeneCarouselIndex > terpeneMaxIndex) setTerpeneCarouselIndex(terpeneMaxIndex);
+  }, [terpeneCarouselIndex, terpeneMaxIndex]);
 
   const handleScroll = useCallback(() => {
     setHeaderScrolled(window.scrollY > 80);
@@ -81,13 +92,6 @@ const SalesPage = () => {
     };
   }, [plantImages.length]);
 
-  const handleTerpeneRequest = (e) => {
-    e.preventDefault();
-    alert(
-      `Thank you! We've received your request for: ${terpeneRequest}. We'll confirm availability shortly.`,
-    );
-    setTerpeneRequest("");
-  };
 
   return (
     <div className="sales-page">
@@ -443,7 +447,7 @@ const SalesPage = () => {
               </a>
             </div>
             <div className="pest-product-card">
-              <div className="pest-product-icon">🧪</div>
+              <div className="pest-product-icon">🍋</div>
               <h3>The Amazing Doctor Zymes</h3>
               <p>
                 All-natural citric acid-based solution for eliminating
@@ -494,7 +498,16 @@ const SalesPage = () => {
               <p>
                 Our decontamination process ensures the highest safety standards
                 while preparing the flower for terpene reintroduction.
+                Available as an optional add-on, established in your contract.
               </p>
+              <a
+                href="https://www.deconix.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="terpene-learn-more"
+              >
+                Learn More →
+              </a>
             </div>
             <div className="terpene-overview-card">
               <div className="terpene-overview-icon">💧</div>
@@ -502,7 +515,16 @@ const SalesPage = () => {
               <p>
                 We source from Floraplex — a trusted supplier of strain-specific
                 and custom terpene blends for the cannabis industry.
+                Available as an optional add-on, established in your contract.
               </p>
+              <a
+                href="https://www.buyterpenesonline.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="terpene-learn-more"
+              >
+                Learn More →
+              </a>
             </div>
             <div className="terpene-overview-card">
               <div className="terpene-overview-icon">⏱️</div>
@@ -516,46 +538,48 @@ const SalesPage = () => {
           </div>
 
           <h3 className="terpene-available-heading">Available Profiles</h3>
-          <div className="terpene-options-grid">
-            {inStockTerpenes.map((terpene, idx) => (
-              <div key={idx} className="terpene-option-card">
-                <span
-                  className={`terpene-type-badge terpene-type-${terpene.type.toLowerCase()}`}
-                >
-                  {terpene.type}
-                </span>
-                <h4>{terpene.name}</h4>
-                <p>{terpene.profile}</p>
+          <div className="terpene-carousel-wrapper">
+            <button
+              className="terpene-carousel-arrow terpene-carousel-arrow-left"
+              onClick={() => setTerpeneCarouselIndex((prev) => Math.max(prev - 1, 0))}
+              disabled={terpeneCarouselIndex === 0}
+            >
+              ‹
+            </button>
+            <div className="terpene-carousel-track">
+              <div
+                className="terpene-carousel-inner"
+                style={{ transform: `translateX(calc(-${terpeneCarouselIndex} * (100% / var(--terpene-visible))))` }}
+              >
+                {inStockTerpenes.map((terpene, idx) => (
+                  <a
+                    key={idx}
+                    href={terpene.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="terpene-option-card terpene-carousel-card"
+                  >
+                    <span
+                      className={`terpene-type-badge terpene-type-${terpene.type.toLowerCase()}`}
+                    >
+                      {terpene.type}
+                    </span>
+                    <h4>{terpene.name}</h4>
+                    <p>{terpene.profile}</p>
+                    <span className="terpene-card-link">View on Floraplex →</span>
+                  </a>
+                ))}
               </div>
-            ))}
+            </div>
+            <button
+              className="terpene-carousel-arrow terpene-carousel-arrow-right"
+              onClick={() => setTerpeneCarouselIndex((prev) => Math.min(prev + 1, terpeneMaxIndex))}
+              disabled={terpeneCarouselIndex >= terpeneMaxIndex}
+            >
+              ›
+            </button>
           </div>
 
-          <div className="terpene-request-form-wrapper">
-            <h3>Request a Custom Profile</h3>
-            <p>
-              Don't see what you need? Request any product from{" "}
-              <a
-                href="https://buyterpenesonline.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Floraplex (buyterpenesonline.com)
-              </a>
-            </p>
-            <form
-              onSubmit={handleTerpeneRequest}
-              className="terpene-request-form"
-            >
-              <input
-                type="text"
-                value={terpeneRequest}
-                onChange={(e) => setTerpeneRequest(e.target.value)}
-                placeholder="Enter Floraplex product name or URL..."
-                required
-              />
-              <button type="submit">Request Availability</button>
-            </form>
-          </div>
         </div>
       </section>
 

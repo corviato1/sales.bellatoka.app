@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { secureGet, secureSet } from "../utils/storage";
 import "../styles/SalesPage.css";
 
 const Contact = () => {
@@ -22,9 +23,9 @@ const Contact = () => {
       status: "new",
       submittedAt: new Date().toISOString(),
     };
-    const existing = JSON.parse(localStorage.getItem("bt_inquiries") || "[]");
+    const existing = secureGet("bt_inquiries") || [];
     existing.unshift(inquiry);
-    localStorage.setItem("bt_inquiries", JSON.stringify(existing));
+    secureSet("bt_inquiries", existing);
     const typeLabel = formData.inquiryType === "apply" ? "Contract Application" : "Information Request";
     alert(`Thank you for your ${typeLabel}! Our team will contact you within 24 hours.`);
     setFormData({

@@ -838,6 +838,19 @@
   font-size: 0.95rem;
 }
 
+.terpene-learn-more {
+  display: inline-block;
+  margin-top: 15px;
+  color: #1a472a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.terpene-learn-more:hover {
+  color: #5cb85c;
+}
+
 .terpene-available-heading {
   text-align: center;
   font-size: 1.5rem;
@@ -845,11 +858,57 @@
   margin-bottom: 30px;
 }
 
-.terpene-options-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
+.terpene-carousel-wrapper {
+  --terpene-visible: 3;
+  display: flex;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 50px;
+}
+
+.terpene-carousel-track {
+  flex: 1;
+  overflow: hidden;
+}
+
+.terpene-carousel-inner {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+.terpene-carousel-card {
+  min-width: calc(100% / var(--terpene-visible));
+  box-sizing: border-box;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-decoration: none;
+  display: block;
+}
+
+.terpene-carousel-arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #1a472a;
+  background: #fff;
+  color: #1a472a;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.terpene-carousel-arrow:hover:not(:disabled) {
+  background: #1a472a;
+  color: #fff;
+}
+
+.terpene-carousel-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .terpene-option-card {
@@ -858,12 +917,13 @@
   border-radius: 12px;
   text-align: center;
   position: relative;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .terpene-option-card:hover {
   transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .terpene-type-badge {
@@ -904,65 +964,14 @@
   font-size: 0.85rem;
 }
 
-.terpene-request-form-wrapper {
-  background: #f8f9fa;
-  padding: 40px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.terpene-request-form-wrapper h3 {
-  text-align: center;
-  font-size: 1.5rem;
-  color: #1a472a;
-  margin-bottom: 15px;
-}
-
-.terpene-request-form-wrapper > p {
-  color: #666;
-  margin-bottom: 25px;
-}
-
-.terpene-request-form-wrapper a {
+.terpene-card-link {
+  display: inline-block;
+  margin-top: 12px;
   color: #1a472a;
   font-weight: 600;
+  font-size: 0.85rem;
 }
 
-.terpene-request-form {
-  display: flex;
-  gap: 15px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.terpene-request-form input {
-  flex: 1;
-  padding: 14px 20px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.terpene-request-form input:focus {
-  outline: none;
-  border-color: #1a472a;
-}
-
-.terpene-request-form button {
-  background: #1a472a;
-  color: #fff;
-  padding: 14px 30px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.terpene-request-form button:hover {
-  background: #2d5a3f;
-}
 
 .dashboard-section {
   padding: 80px 0;
@@ -1362,9 +1371,8 @@
     gap: 20px;
   }
 
-  .terpene-options-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+  .terpene-carousel-wrapper {
+    --terpene-visible: 2;
   }
 
   .terpene-option-card {
@@ -1391,17 +1399,8 @@
     margin: 0 10px;
   }
 
-  .terpene-request-form {
-    flex-direction: column;
-  }
-
-  .terpene-request-form button {
-    padding: 14px 20px;
-  }
-
   .data-ownership-banner,
   .dashboard-data-access-banner,
-  .terpene-request-form-wrapper,
   .pest-compliance-banner {
     padding: 25px 20px;
   }
@@ -1437,8 +1436,14 @@
     font-size: 1.5rem;
   }
 
-  .terpene-options-grid {
-    grid-template-columns: 1fr;
+  .terpene-carousel-wrapper {
+    --terpene-visible: 1;
+  }
+
+  .terpene-carousel-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
   }
 
   .carousel-slide img {
