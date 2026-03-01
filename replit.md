@@ -2,9 +2,21 @@
 
 A React-based sales page for Bella Toka cannabis crop futures distributors.
 
+## IMPORTANT: Hosting & Deployment
+
+**Replit is the development environment ONLY. This project is NEVER hosted or deployed on Replit.**
+
+Production stack:
+- **Netlify** — Frontend hosting, serverless functions, CDN
+- **Neon** — Database
+- **GoDaddy** — Domain management
+- **GitHub** — Source control, CI/CD
+
+All deployment configuration (netlify.toml, public/_headers, etc.) targets Netlify exclusively.
+
 ## Project Overview
 
-This is a Create React App (CRA) project with client-side routing and an admin dashboard. It was originally designed to be deployed on Netlify with serverless functions for authentication.
+This is a Create React App (CRA) project with client-side routing and an admin dashboard, deployed on Netlify with serverless functions for authentication.
 
 ## Architecture
 
@@ -28,11 +40,10 @@ This is a Create React App (CRA) project with client-side routing and an admin d
 - The `ADMIN_PASSWORD` environment secret is used by Netlify functions in production
 - Carousel images live in `public/images/carousel/` and a manifest is auto-generated on `npm start`/`npm run build`
 
-## Replit Configuration
+## Replit Dev Server
 
 - **Dev server**: runs on `0.0.0.0:5000` via `npm start`
-- **Env vars**: `HOST=0.0.0.0`, `PORT=5000`, `DANGEROUSLY_DISABLE_HOST_CHECK=true` (development)
-- **Deployment**: Static site — `npm run build` → `build/` directory
+- **Env vars (dev only)**: `HOST=0.0.0.0`, `PORT=5000`, `DANGEROUSLY_DISABLE_HOST_CHECK=true`
 
 ## Security Audit
 
@@ -55,5 +66,6 @@ See `SECURITY_AUDIT.md` for full findings, remaining risks, and remediation road
 - `netlify/functions/` — Serverless auth functions
 - `scripts/generate-carousel-manifest.js` — Auto-generates carousel image list
 - `public/images/` — Static images including carousel assets
-- `public/_headers` — Security headers (CSP, HSTS, X-Frame-Options, etc.)
+- `public/_headers` — Security headers for Netlify (CSP, HSTS, X-Frame-Options, etc.)
+- `netlify.toml` — Netlify build and redirect configuration
 - `SECURITY_AUDIT.md` — Full adversarial security audit report
