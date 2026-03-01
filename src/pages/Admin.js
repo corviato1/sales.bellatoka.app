@@ -630,7 +630,7 @@ function ConsoleLogsTab() {
 
 function SettingsTab() {
   const [settings, setSettings] = useState(() => {
-    const saved = JSON.parse(localStorage.getItem('bt_settings') || '{}');
+    const saved = secureGet('bt_settings') || {};
     return {
       emailNotifications: saved.emailNotifications !== false,
       autoResponseEnabled: saved.autoResponseEnabled || false,
@@ -641,7 +641,7 @@ function SettingsTab() {
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
-    localStorage.setItem('bt_settings', JSON.stringify(settings));
+    secureSet('bt_settings', settings);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -751,7 +751,7 @@ function SettingsTab() {
 function AdminDashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('profile');
   const [profile, setProfile] = useState(() => {
-    const saved = JSON.parse(localStorage.getItem('bt_profile') || '{}');
+    const saved = secureGet('bt_profile') || {};
     return {
       brandName: saved.brandName || 'Bella Toka',
       facilityName: saved.facilityName || 'R&D Facility 3',
@@ -775,7 +775,7 @@ function AdminDashboard({ onLogout }) {
   const handleSaveProfile = () => {
     setSaving(true);
     setTimeout(() => {
-      localStorage.setItem('bt_profile', JSON.stringify(profile));
+      secureSet('bt_profile', profile);
       setSaving(false);
       setMessage('Profile saved successfully!');
       setMessageType('success');
@@ -855,7 +855,7 @@ export default function Admin() {
 
   useEffect(() => {
     const token = localStorage.getItem('bt_admin_token');
-    if (token === 'authenticated') {
+    if (token) {
       setAuthenticated(true);
     }
   }, []);

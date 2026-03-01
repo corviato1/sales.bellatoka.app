@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
   publish = "build"
-  environment = { SECRETS_SCAN_OMIT_KEYS = "ADMIN_PASSWORD" }
+  environment = { SECRETS_SCAN_OMIT_KEYS = "ADMIN_PASSWORD", GENERATE_SOURCEMAP = "false" }
 
 [[redirects]]
   from = "/*"

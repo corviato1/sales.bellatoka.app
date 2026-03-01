@@ -34,12 +34,26 @@ This is a Create React App (CRA) project with client-side routing and an admin d
 - **Env vars**: `HOST=0.0.0.0`, `PORT=5000`, `DANGEROUSLY_DISABLE_HOST_CHECK=true` (development)
 - **Deployment**: Static site — `npm run build` → `build/` directory
 
+## Security Audit
+
+A comprehensive security audit was performed and documented in `SECURITY_AUDIT.md`. Key fixes applied:
+- Fixed admin auth bypass (token validation in Admin.js)
+- Added Content Security Policy header
+- Removed deprecated X-XSS-Protection header
+- Migrated plaintext settings/profile storage to use secureSet/secureGet
+- Disabled source maps in production Netlify build
+
+See `SECURITY_AUDIT.md` for full findings, remaining risks, and remediation roadmap.
+
 ## Key Files
 
 - `src/App.js` — Router setup
 - `src/pages/` — All page components
 - `src/styles/` — CSS files
 - `src/utils/` — consoleCapture, storage utilities
+- `src/utils/storage.js` — XOR-based obfuscation for localStorage data
 - `netlify/functions/` — Serverless auth functions
 - `scripts/generate-carousel-manifest.js` — Auto-generates carousel image list
 - `public/images/` — Static images including carousel assets
+- `public/_headers` — Security headers (CSP, HSTS, X-Frame-Options, etc.)
+- `SECURITY_AUDIT.md` — Full adversarial security audit report
