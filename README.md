@@ -1,2 +1,5 @@
-# sales.bellatoka.app
-sales page for distributors
+## Problems:
+-
+
+## To Do:
+-
