@@ -483,7 +483,7 @@ const SalesPage = () => {
                 the neem tree. Effective against mites, aphids, and whiteflies.
               </p>
               <a
-                href="https://www.montereylawngarden.com/product/monterey-neem-oil-rtu/"
+                href="https://ferrymorse.com/products/superthrive-neem-oil-leaf-polish-8-oz"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="pest-product-link"
