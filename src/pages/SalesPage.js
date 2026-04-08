@@ -549,7 +549,7 @@ const SalesPage = () => {
         <div className="page-container">
           <h2 className="section-heading">Custom Terpene Infusion</h2>
           <p className="section-description">
-            Every contract includes complimentary terpene infusion — customize
+            Every contract offers complimentary terpene infusion — customize
             the aromatic profile of your product at no additional cost.
           </p>
 
