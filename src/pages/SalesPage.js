@@ -15,6 +15,11 @@ const SalesPage = () => {
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [showPesticideModal, setShowPesticideModal] = useState(false);
 
+  const [inventoryUnlocked, setInventoryUnlocked] = useState(false);
+  const [inventoryPassword, setInventoryPassword] = useState('');
+  const [inventoryPasswordError, setInventoryPasswordError] = useState('');
+  const [inventoryLoading, setInventoryLoading] = useState(false);
+
   useEffect(() => {
     fetch(`${process.env.PUBLIC_URL}/images/carousel/manifest.json`)
       .then((res) => res.json())
@@ -117,7 +122,7 @@ const SalesPage = () => {
         <div className="intro-overlay">
           <div className="intro-content">
             <span className="intro-badge">
-              R&D Facility 3 — Type 1A Licensed
+              R&D Facility 3 — Cultivation - Specialty Indoor
             </span>
             <h1>Cannabis Crop Futures</h1>
             <p className="intro-subtitle">
@@ -142,12 +147,6 @@ const SalesPage = () => {
 
       <section id="contracts" className="contracts-section">
         <div className="page-container">
-          <h2 className="section-heading">Crop Futures Contracts</h2>
-          <p className="section-description">
-            All contracts are cannabis crop futures — payment is made at the
-            time of each crop fulfillment.
-          </p>
-
           <div className="contract-highlights-row">
             <div className="contract-highlight-card contract-highlight-card-terms">
               <div className="contract-highlight-icon">📋</div>
@@ -235,14 +234,14 @@ const SalesPage = () => {
         <div className="page-container">
           <h2 className="section-heading">R&D Facility 3</h2>
           <p className="section-description">
-            A small-batch, Type 1A licensed craft cultivation facility in Sonoma
-            County, California.
+            A small-batch craft cultivation facility in Sonoma County, California,
+            operating under a Cultivation - Specialty Indoor license.
           </p>
 
           <div className="facility-highlights-grid">
             <div className="facility-highlight-card">
               <div className="facility-highlight-icon">🏭</div>
-              <h3>Type 1A Licensed</h3>
+              <h3>Cultivation - Specialty Indoor</h3>
               <p>
                 Small craft cultivation licensed R&D facility focused on quality
                 over quantity with hands-on attention to every plant.
@@ -327,7 +326,7 @@ const SalesPage = () => {
                 <div className="product-spec-row">
                   <span className="product-spec-label">Pricing</span>
                   <span className="product-spec-value">
-                    $X / lb (locked at contract signing)
+                    Set at contract signing — locked for contract term
                   </span>
                 </div>
                 <div className="product-spec-row">
@@ -338,7 +337,7 @@ const SalesPage = () => {
                 </div>
                 <div className="product-spec-row">
                   <span className="product-spec-label">License</span>
-                  <span className="product-spec-value">Type 1A — Craft</span>
+                  <span className="product-spec-value">Cultivation - Specialty Indoor</span>
                 </div>
               </div>
             </div>
@@ -361,45 +360,108 @@ const SalesPage = () => {
       <section id="inventory" className="inventory-section">
         <div className="page-container">
           <h2 className="section-heading">Current Inventory</h2>
-          <p className="section-description">
-            Available now — ready for immediate fulfillment.
-          </p>
 
-          <div className="inventory-strain-card">
-            <div className="inventory-strain-header">
-              <div>
-                <h3>Blue Dream</h3>
-                <span className="inventory-strain-type">Hybrid</span>
-              </div>
-              <div className="inventory-total">
-                <span className="inventory-total-value">6.5 lbs</span>
-                <span className="inventory-total-label">Total Available</span>
-              </div>
+          {!inventoryUnlocked ? (
+            <div className="inventory-lock-wrapper">
+              <div className="inventory-lock-icon">🔒</div>
+              <p className="inventory-lock-message">
+                This section is for authorized partners only.
+              </p>
+              <form
+                className="inventory-lock-form"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setInventoryLoading(true);
+                  setInventoryPasswordError('');
+
+                  const isDev = process.env.NODE_ENV === 'development';
+
+                  try {
+                    const res = await fetch('/.netlify/functions/inventory-auth', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ password: inventoryPassword }),
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                      setInventoryUnlocked(true);
+                    } else {
+                      setInventoryPasswordError(data.error || 'Incorrect password.');
+                    }
+                  } catch {
+                    if (isDev) {
+                      setInventoryPasswordError('Auth service unavailable. In development, use password: 420');
+                    } else {
+                      setInventoryPasswordError('Unable to connect. Please try again.');
+                    }
+                  }
+
+                  setInventoryLoading(false);
+                }}
+              >
+                <input type="text" name="username" autoComplete="username" aria-hidden="true" style={{ display: 'none' }} readOnly tabIndex={-1} />
+                <input
+                  type="password"
+                  autoComplete="current-password"
+                  className="inventory-lock-input"
+                  placeholder="Enter password"
+                  value={inventoryPassword}
+                  onChange={(e) => {
+                    setInventoryPassword(e.target.value);
+                    setInventoryPasswordError('');
+                  }}
+                />
+                <button type="submit" className="inventory-lock-button" disabled={inventoryLoading}>
+                  {inventoryLoading ? 'Verifying...' : 'Access Inventory'}
+                </button>
+                {inventoryPasswordError && (
+                  <p className="inventory-lock-error">{inventoryPasswordError}</p>
+                )}
+              </form>
             </div>
-            <div className="inventory-breakdown">
-              <div className="inventory-item">
-                <div className="inventory-item-weight">3 lbs</div>
-                <div className="inventory-item-label">100% Hand Trim</div>
-                <div className="inventory-item-tag inventory-item-tag-premium">
-                  Premium
+          ) : (
+            <>
+              <p className="section-description">
+                Available now — ready for immediate fulfillment.
+              </p>
+
+              <div className="inventory-strain-card">
+                <div className="inventory-strain-header">
+                  <div>
+                    <h3>Blue Dream</h3>
+                    <span className="inventory-strain-type">Hybrid</span>
+                  </div>
+                  <div className="inventory-total">
+                    <span className="inventory-total-value">6.5 lbs</span>
+                    <span className="inventory-total-label">Total Available</span>
+                  </div>
+                </div>
+                <div className="inventory-breakdown">
+                  <div className="inventory-item">
+                    <div className="inventory-item-weight">3 lbs</div>
+                    <div className="inventory-item-label">100% Hand Trim</div>
+                    <div className="inventory-item-tag inventory-item-tag-premium">
+                      Premium
+                    </div>
+                  </div>
+                  <div className="inventory-item">
+                    <div className="inventory-item-weight">1 lb</div>
+                    <div className="inventory-item-label">Machine Trim</div>
+                    <div className="inventory-item-tag inventory-item-tag-standard">
+                      Standard
+                    </div>
+                  </div>
+                  <div className="inventory-item">
+                    <div className="inventory-item-weight">2.5 lbs</div>
+                    <div className="inventory-item-label">Trim</div>
+                    <div className="inventory-item-tag inventory-item-tag-bulk">
+                      Bulk
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="inventory-item">
-                <div className="inventory-item-weight">1 lb</div>
-                <div className="inventory-item-label">Machine Trim</div>
-                <div className="inventory-item-tag inventory-item-tag-standard">
-                  Standard
-                </div>
-              </div>
-              <div className="inventory-item">
-                <div className="inventory-item-weight">2.5 lbs</div>
-                <div className="inventory-item-label">Trim</div>
-                <div className="inventory-item-tag inventory-item-tag-bulk">
-                  Bulk
-                </div>
-              </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -541,8 +603,7 @@ const SalesPage = () => {
           <div className="terpene-carousel-wrapper">
             <button
               className="terpene-carousel-arrow terpene-carousel-arrow-left"
-              onClick={() => setTerpeneCarouselIndex((prev) => Math.max(prev - 1, 0))}
-              disabled={terpeneCarouselIndex === 0}
+              onClick={() => setTerpeneCarouselIndex((prev) => prev === 0 ? terpeneMaxIndex : prev - 1)}
             >
               ‹
             </button>
@@ -573,8 +634,7 @@ const SalesPage = () => {
             </div>
             <button
               className="terpene-carousel-arrow terpene-carousel-arrow-right"
-              onClick={() => setTerpeneCarouselIndex((prev) => Math.min(prev + 1, terpeneMaxIndex))}
-              disabled={terpeneCarouselIndex >= terpeneMaxIndex}
+              onClick={() => setTerpeneCarouselIndex((prev) => prev >= terpeneMaxIndex ? 0 : prev + 1)}
             >
               ›
             </button>
@@ -605,16 +665,19 @@ const SalesPage = () => {
               <div className="dashboard-feature-icon">📈</div>
               <h3>Data Analytics</h3>
               <p>
-                Visualize cultivation metrics, sales trends, inventory turnover,
-                and product performance with interactive charts.
+                Real-time crop metrics, environmental data, feed schedules, and
+                historical yield trends — all tied to your allocation and updated
+                each grow cycle.
               </p>
             </div>
             <div className="dashboard-feature-card">
               <div className="dashboard-feature-icon">🎨</div>
               <h3>Custom End-User Frontend</h3>
               <p>
-                A one-page custom frontend experience built for your customers —
-                branded to your specifications and powered by live data.
+                A branded product page for your customers, built and hosted by
+                Bella Toka. Includes batch-specific QR codes linking to verified
+                lab results, with mobile-responsive design — no technical work
+                required.
               </p>
             </div>
             <div className="dashboard-feature-card">

@@ -313,7 +313,7 @@ const mockData = {
             <tr><td>Remaining Estimate</td><td>~390 lbs</td></tr>
             <tr><td>Payment Terms</td><td>At Crop Fulfillment</td></tr>
             <tr><td>Data Vesting</td><td>3 Years — Full Ownership</td></tr>
-            <tr><td>License</td><td>Type 1A — Craft</td></tr>
+            <tr><td>License</td><td>Cultivation - Specialty Indoor</td></tr>
             <tr><td>Facility</td><td>R&D Facility 3, Sonoma County</td></tr>
           </tbody>
         </table>
@@ -394,9 +394,9 @@ function DashboardMain({ onLogout }) {
   };
 
   const cards = [
-    { key: "analytics", icon: "📈", title: "Data Analytics", desc: "Yield tracking, grow cycle progress, environmental conditions, feed schedules, and growth stage logs for every harvest." },
+    { key: "analytics", icon: "📈", title: "Data Analytics", desc: "Track your allocation's yield trends, grow cycle progress, environmental logs, and feed schedules — with full historical access for every harvest." },
     { key: "images", icon: "📷", title: "Image Catalog", desc: "Browse and download high-resolution strain images, facility photos, and product photography." },
-    { key: "frontend", icon: "🎨", title: "Custom Frontend", desc: "A static one-page web document branded to your specifications, with custom QR codes linking to verified lab results per batch." },
+    { key: "frontend", icon: "🎨", title: "Custom Frontend", desc: "Your branded customer-facing product page, hosted by Bella Toka. Each batch gets a unique QR code linking to its verified lab results and COA — ready for packaging." },
     { key: "contract", icon: "📑", title: "Contract Info & Progress", desc: "Your contract details, fulfillment progress, delivery history, and key dates." },
     { key: "lab", icon: "📋", title: "Lab Results & COAs", desc: "Access lab test results, terpene profiles, and cannabinoid analysis for every harvest." },
   ];

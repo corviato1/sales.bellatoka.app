@@ -225,6 +225,9 @@
   border-radius: 12px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .contract-highlight-card:hover {
@@ -239,14 +242,16 @@
 
 .contract-highlight-card h3 {
   color: #1a472a;
-  font-size: 1.2rem;
-  margin-bottom: 15px;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  line-height: 1.4;
 }
 
 .contract-highlight-card p {
   color: #666;
   line-height: 1.7;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
+  flex: 1;
 }
 
 .contract-highlight-card-terms {
@@ -498,6 +503,70 @@
 .inventory-section {
   padding: 80px 0;
   background: #fff;
+}
+
+.inventory-lock-wrapper {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.inventory-lock-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.inventory-lock-message {
+  color: #666;
+  font-size: 1.05rem;
+  margin-bottom: 30px;
+}
+
+.inventory-lock-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.inventory-lock-input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.inventory-lock-input:focus {
+  border-color: #1a472a;
+}
+
+.inventory-lock-button {
+  width: 100%;
+  background: linear-gradient(135deg, #1a472a 0%, #2d5a3f 100%);
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.inventory-lock-button:hover {
+  opacity: 0.88;
+}
+
+.inventory-lock-error {
+  color: #c0392b;
+  font-size: 0.88rem;
+  margin: 0;
 }
 
 .inventory-strain-card {
@@ -901,14 +970,9 @@
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-.terpene-carousel-arrow:hover:not(:disabled) {
+.terpene-carousel-arrow:hover {
   background: #1a472a;
   color: #fff;
-}
-
-.terpene-carousel-arrow:disabled {
-  opacity: 0.3;
-  cursor: default;
 }
 
 .terpene-option-card {
