@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/SalesPage.css";
+import carouselManifest from "../media/carousel/manifest.json";
 
 const formatImageName = (filename) => {
   const name = filename.replace(/\.[^.]+$/, "");
@@ -8,9 +9,15 @@ const formatImageName = (filename) => {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
+const plantImages = carouselManifest.map((file) => ({
+  src: require(`../media/carousel/${file}`),
+  alt: formatImageName(file),
+  caption: formatImageName(file),
+}));
+
 const SalesPage = () => {
   const [plantCarouselIndex, setPlantCarouselIndex] = useState(0);
-  const [plantImages, setPlantImages] = useState([]);
+  const [fullView, setFullView] = useState(false);
 
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [showPesticideModal, setShowPesticideModal] = useState(false);
@@ -19,21 +26,6 @@ const SalesPage = () => {
   const [inventoryPassword, setInventoryPassword] = useState('');
   const [inventoryPasswordError, setInventoryPasswordError] = useState('');
   const [inventoryLoading, setInventoryLoading] = useState(false);
-
-  useEffect(() => {
-    fetch(`${process.env.PUBLIC_URL}/images/carousel/manifest.json`)
-      .then((res) => res.json())
-      .then((files) => {
-        setPlantImages(
-          files.map((file) => ({
-            src: `/images/carousel/${file}`,
-            alt: formatImageName(file),
-            caption: formatImageName(file),
-          }))
-        );
-      })
-      .catch(() => {});
-  }, []);
 
   const [terpeneCarouselIndex, setTerpeneCarouselIndex] = useState(0);
   const [terpeneVisible, setTerpeneVisible] = useState(3);
@@ -95,7 +87,7 @@ const SalesPage = () => {
     return () => {
       clearInterval(plantTimer);
     };
-  }, [plantImages.length]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 
   return (
@@ -275,7 +267,7 @@ const SalesPage = () => {
 
           <div className="facility-carousel-wrapper">
             <h3 className="carousel-title">Inside the Facility</h3>
-            <div className="image-carousel">
+            <div className={`image-carousel${fullView ? ' carousel-full-view' : ''}`}>
               <div
                 className="carousel-track"
                 style={{
@@ -284,7 +276,11 @@ const SalesPage = () => {
               >
                 {plantImages.map((img, idx) => (
                   <div key={idx} className="carousel-slide">
-                    <img src={img.src} alt={img.alt} />
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      onClick={() => setFullView((v) => !v)}
+                    />
                     <p className="carousel-caption">{img.caption}</p>
                   </div>
                 ))}
@@ -812,6 +808,7 @@ const SalesPage = () => {
           </div>
         </div>
       )}
+
     </div>
   );
 };

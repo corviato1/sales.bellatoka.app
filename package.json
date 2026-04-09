@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^13.5.0",
+    "express": "^4.22.1",
     "lucide-react": "^0.563.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
@@ -18,10 +19,12 @@
     "prestart": "node scripts/generate-carousel-manifest.js",
     "prebuild": "node scripts/generate-carousel-manifest.js",
     "start": "react-scripts start",
+    "start:server": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": [
       "react-app",
